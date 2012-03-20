@@ -1,92 +1,74 @@
 package de.xghostkillerx.superwheat;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Logger;
-
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.bukkit.Permissions.Permissions;
-
 public class SuperWheat extends JavaPlugin {
-	
-	//Getting the Logger so we can send messages to the console
-	Logger log = Logger.getLogger("Minecraft");
-	
-	//Here we set pdfile as a PluginDescriptionFile variable
-	PluginDescriptionFile pdfile;
-	
-	//Here we initialize the PlayerListener class
-	SWPlayerListener playerListener = new SWPlayerListener(this);
-	
-	//Here we initialize the BlockListener class
-	SWBlockListener blockListener = new SWBlockListener(this);
-	
-	//Here we set permissionHandle as a PermissionHandler variable
-	public static PermissionHandler permissionHandler;
 
-	@Override
+	private final Logger log = Logger.getLogger("Minecraft");
+	private final SuperWheatPlayerListener playerListener = new SuperWheatPlayerListener(this);
+	private final SuperWheatBlockListener blockListener = new SuperWheatBlockListener(this);
+	public FileConfiguration config;
+	private File configFile;
+
+	// Shutdown
 	public void onDisable() {
-		//The variable pdfile is equal to the plugin.yml file, using the method 'getDescription()'
-		pdfile = getDescription();
-		
-		//Log to the console that SuperWheat is disabled
-		log.info("[" + pdfile.getFullName() + "] is now disabled!");
+		// Message
+		PluginDescriptionFile pdfFile = this.getDescription();
+		log.info(pdfFile.getName() + " " + pdfFile.getVersion() + " is disabled!");
 	}
 
-	@Override
+	// Start
 	public void onEnable() {
-		//The variable pdfile is equal to the plugin.yml file, using the method 'getDescription()'
-		pdfile = getDescription();
-		
-		//Getting the plugin manager
+		// Events
 		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvents(playerListener, this);
+		pm.registerEvents(blockListener, this);
 		
-		//Registering Events
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PHYSICS, blockListener, Event.Priority.Normal, this);
-		
-		//Permissions setup
-		Plugin permissionsPlugin = getServer().getPluginManager().getPlugin("Permissions");
-		if(permissionsPlugin == null){
-			log.info("[" + pdfile.getFullName() + "] Permissions system not detected, defaulting to OP permissions.");
-		} else{
-			permissionHandler = ((Permissions) permissionsPlugin).getHandler();
-		    log.info("[" + pdfile.getFullName() + "] Found and will use plugin " + ((Permissions)permissionsPlugin).getDescription().getFullName());
+		// Config
+		configFile = new File(getDataFolder(), "config.yml");
+		if(!configFile.exists()){
+			configFile.getParentFile().mkdirs();
+			copy(getResource("config.yml"), configFile);
 		}
-		//End of Permissions setup
+		config = this.getConfig();
+		loadConfig();
+
+		// Message
+		PluginDescriptionFile pdfFile = this.getDescription();
+		log.info(pdfFile.getName() + " " + pdfFile.getVersion() + " is enabled!");
 		
-		//The variable pdfile is equal to the plugin.yml file, using the method 'getDescription()'
-		pdfile = getDescription();
-		
-		//Log to the console that SuperWheat is enabled
-		log.info("[" + pdfile.getFullName() + "] is now enabled!");
+	}
+
+	private void loadConfig() {
+		config.addDefault("message", "§6[SuperWheat] That crop isn't fully grown yet!");
+		config.addDefault("preventWater", true);
+		config.addDefault("preventWaterGrown", false);
+		config.options().copyDefaults(true);
+		saveConfig();
 	}
 	
-	/*
-	 * Method to check if the player has permission to do something
-	 */
-	public static boolean hasPermission(Player player, String permission){
-		
-		//If permissions is not installed, it will determine whether you can or
-		//can't do something based on if you're an OP or not
-		if(permissionHandler == null){
-			if(permission.equalsIgnoreCase("SuperWheat.allow.crop.regrowing")){
-				return true;
-			} else{
-			return player.isOp();
+	// If no config is found, copy the default one!
+	private void copy(InputStream in, File file) {
+		try {
+			OutputStream out = new FileOutputStream(file);
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len=in.read(buf)) > 0) {
+				out.write(buf, 0, len);
 			}
-			
-		//Else, if permissions is installed, it will determine whether you can
-		//or can't do something based on if you have the right permission node or not
-		} else{
-			return permissionHandler.has(player, permission);
+			out.close();
+			in.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
-
-//Source fully commented by thescreem

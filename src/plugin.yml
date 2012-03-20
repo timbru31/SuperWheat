@@ -1,4 +1,16 @@
 name: SuperWheat
-main: com.thescreem.SuperWheat
-version: 0.1
-author: thescreem
+main: de.xghostkillerx.superwheat.SuperWheat
+version: 0.2
+author: xGhOsTkiLLeRx
+authors: [thescreem]
+permissions:
+    SuperWheat.*:
+        children:
+            SuperWheat.destroying: true
+            SuperWheat.regrowing: true
+    SuperWheat.destroying:
+        default: op
+        description: Allows destroying of crops
+    SuperWheat.regrowing:
+        default: op
+        description: Allows regrowing of crops
