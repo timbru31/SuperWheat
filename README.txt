@@ -15,7 +15,7 @@ message: §6[SuperWheat] That crop isn't fully grown yet!
 preventWater: true
 preventWaterGrown: false
 
-Permissions (if no permissions system is detected, only OPs are able to use the commands!)
+Permissions (if no permissions system is detected, only OPs are able to use the permissions!)
 Only bukkit's permissions system is supported!
 
 SuperWheat.*
