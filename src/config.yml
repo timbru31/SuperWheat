@@ -1,0 +1,6 @@
+# For help please either refer to the
+# forum thread: http://bit.ly/superwheatthread
+# or the bukkit dev page: http://bit.ly/superwheatpage
+message: §6[SuperWheat] That crop isn't fully grown yet!
+preventWater: true
+preventWaterGrown: false
