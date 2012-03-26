@@ -5,6 +5,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 
+/**
+ * SuperWheat for CraftBukkit/Bukkit
+ * Handles block activities!
+ * Refer to the forum thread:
+ * http://bit.ly/superwheatthread
+ * Refer to the dev.bukkit.org page: http://bit.ly/superwheatpage
+ * 
+ * @author  xGhOsTkiLLeRx
+ * @thanks  to thescreem for the original SuperWheat plugin!
+ */
+
 public class SuperWheatBlockListener implements Listener {
 
 	public SuperWheat plugin;

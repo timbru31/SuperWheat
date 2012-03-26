@@ -10,6 +10,16 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * SuperWheat for CraftBukkit/Bukkit Handles some general stuff!
+ * Refer to the forum thread:
+ * http://bit.ly/superwheatthread
+ * Refer to the dev.bukkit.org page: http://bit.ly/superwheatpage
+ * 
+ * @author  xGhOsTkiLLeRx
+ * @thanks  to thescreem for the original SuperWheat plugin!
+ */
+
 public class SuperWheat extends JavaPlugin {
 
 	private final Logger log = Logger.getLogger("Minecraft");
@@ -48,6 +58,7 @@ public class SuperWheat extends JavaPlugin {
 	}
 
 	private void loadConfig() {
+		config.options().header("For help please either refer to the\nforum thread: http://bit.ly/superwheatthread\nor the bukkit dev page: http://bit.ly/superwheatpage");
 		config.addDefault("message", "§6[SuperWheat] That crop isn't fully grown yet!");
 		config.addDefault("preventWater", true);
 		config.addDefault("preventWaterGrown", false);
