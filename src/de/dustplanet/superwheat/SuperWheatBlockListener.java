@@ -1,4 +1,4 @@
-package de.xghostkillerx.superwheat;
+package de.dustplanet.superwheat;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

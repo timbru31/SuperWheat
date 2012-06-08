@@ -1,4 +1,4 @@
-package de.xghostkillerx.superwheat;
+package de.dustplanet.superwheat;
 
 import java.io.File;
 import java.io.FileOutputStream;
