@@ -25,10 +25,10 @@ public class SuperWheatBlockListener implements Listener {
 
 	@EventHandler
 	public void onBlockFromTo(BlockFromToEvent event) {
-		if (plugin.config.getBoolean("preventWater")) {
+		if (plugin.preventWater) {
 			if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.STATIONARY_WATER) {
 				if (event.getToBlock().getType() == Material.CROPS) {
-					if (plugin.config.getBoolean("preventWaterGrown")) {
+					if (plugin.preventWaterGrown) {
 						event.setCancelled(true);
 					}
 					else if ((byte) event.getToBlock().getData() != 7) {

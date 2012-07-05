@@ -1,6 +1,6 @@
 name: SuperWheat
 main: de.dustplanet.superwheat.SuperWheat
-version: 0.2
+version: 0.3
 author: xGhOsTkiLLeRx
 authors: [thescreem]
 permissions:
@@ -8,9 +8,13 @@ permissions:
         children:
             SuperWheat.destroying: true
             SuperWheat.regrowing: true
+            SuperWheat.seeds: true
     SuperWheat.destroying:
         default: op
         description: Allows destroying of crops
     SuperWheat.regrowing:
         default: op
         description: Allows regrowing of crops
+    SuperWheat.seeds:
+        default: op
+        description: Allows getting of seeds, too

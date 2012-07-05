@@ -22,9 +22,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class SuperWheat extends JavaPlugin {
 
-	private final Logger log = Logger.getLogger("Minecraft");
+	public Logger log = Logger.getLogger("Minecraft");
 	private final SuperWheatPlayerListener playerListener = new SuperWheatPlayerListener(this);
 	private final SuperWheatBlockListener blockListener = new SuperWheatBlockListener(this);
+	public boolean preventWater = true, preventWaterGrown, noDropsCreative = true, blockCreativeDestroying;
+	public String message = "§6[SuperWheat] That crop isn't fully grown yet!";
 	public FileConfiguration config;
 	private File configFile;
 
@@ -62,8 +64,15 @@ public class SuperWheat extends JavaPlugin {
 		config.addDefault("message", "§6[SuperWheat] That crop isn't fully grown yet!");
 		config.addDefault("preventWater", true);
 		config.addDefault("preventWaterGrown", false);
+		config.addDefault("noDropsCreative", true);
+		config.addDefault("blockCreativeDestroying", false);
 		config.options().copyDefaults(true);
 		saveConfig();
+		preventWater = config.getBoolean("preventWater");
+		preventWaterGrown = config.getBoolean("preventWaterGrown");
+		noDropsCreative = config.getBoolean("noDropsCreative");
+		blockCreativeDestroying = config.getBoolean("blockCreativeDestroying");
+		message = config.getString("message");
 	}
 	
 	// If no config is found, copy the default one!

@@ -14,6 +14,8 @@ Standard config:
 message: §6[SuperWheat] That crop isn't fully grown yet!
 preventWater: true
 preventWaterGrown: false
+noDropsCreative: true
+blockCreativeDestroying: false
 
 Permissions (if no permissions system is detected, only OPs are able to use the permissions!)
 Only bukkit's permissions system is supported!
@@ -26,3 +28,6 @@ Description: Automatically re-grows the harvested wheat
 
 SuperWheat.destroying
 Description: Allows you to destroy not full grown crops
+
+SuperWheat.seeds
+Description: Drops seeds, too
