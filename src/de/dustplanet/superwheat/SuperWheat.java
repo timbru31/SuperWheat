@@ -23,9 +23,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class SuperWheat extends JavaPlugin {
 
 	public Logger log = Logger.getLogger("Minecraft");
-	private final SuperWheatPlayerListener playerListener = new SuperWheatPlayerListener(this);
 	private final SuperWheatBlockListener blockListener = new SuperWheatBlockListener(this);
-	public boolean preventWater = true, preventWaterGrown, noDropsCreative = true, blockCreativeDestroying;
+	public boolean preventWater = true, preventWaterGrown, dropsCreative = false, blockCreativeDestroying, waterDropWheat = true, waterDropSeeds;
+	public int delayHit = 3, delayWater = 5;
 	public String message = "§6[SuperWheat] That crop isn't fully grown yet!";
 	public FileConfiguration config;
 	private File configFile;
@@ -41,7 +41,6 @@ public class SuperWheat extends JavaPlugin {
 	public void onEnable() {
 		// Events
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(playerListener, this);
 		pm.registerEvents(blockListener, this);
 		
 		// Config
@@ -62,17 +61,25 @@ public class SuperWheat extends JavaPlugin {
 	private void loadConfig() {
 		config.options().header("For help please either refer to the\nforum thread: http://bit.ly/superwheatthread\nor the bukkit dev page: http://bit.ly/superwheatpage");
 		config.addDefault("message", "§6[SuperWheat] That crop isn't fully grown yet!");
-		config.addDefault("preventWater", true);
-		config.addDefault("preventWaterGrown", false);
-		config.addDefault("noDropsCreative", true);
-		config.addDefault("blockCreativeDestroying", false);
+		config.addDefault("water.drops.wheat", true);
+		config.addDefault("water.drops.seed", false);
+		config.addDefault("water.prevent.premature", true);
+		config.addDefault("water.prevent.mature", false);
+		config.addDefault("creative.dropsCreative", false);
+		config.addDefault("creative.blockCreativeDestroying", false);
+		config.addDefault("delayHit", 3);
+		config.addDefault("water.delayWater", 5);
 		config.options().copyDefaults(true);
 		saveConfig();
-		preventWater = config.getBoolean("preventWater");
-		preventWaterGrown = config.getBoolean("preventWaterGrown");
-		noDropsCreative = config.getBoolean("noDropsCreative");
-		blockCreativeDestroying = config.getBoolean("blockCreativeDestroying");
+		preventWater = config.getBoolean("water.prevent.premature");
+		preventWaterGrown = config.getBoolean("water.prevent.mature");
+		dropsCreative = config.getBoolean("creative.dropsCreative");
+		blockCreativeDestroying = config.getBoolean("creative.blockCreativeDestroying");
 		message = config.getString("message");
+		delayHit = config.getInt("delayHit");
+		delayWater = config.getInt("water.delayWater");
+		waterDropWheat = config.getBoolean("water.drops.wheat");
+		waterDropSeeds = config.getBoolean("water.drops.seed");
 	}
 	
 	// If no config is found, copy the default one!
