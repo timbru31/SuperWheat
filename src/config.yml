@@ -2,6 +2,7 @@
 # forum thread: http://bit.ly/superwheatthread
 # or the bukkit dev page: http://bit.ly/superwheatpage
 message: §6[SuperWheat] That crop isn't fully grown yet!
+delayHit: 3
 water:
   drops:
     wheat: true
@@ -10,7 +11,15 @@ water:
     premature: true
     mature: false
   delayWater: 5
-delayHit: 3
+  delay: 5
+piston:
+  delay: 5
+  drops:
+    wheat: true
+    seed: false
+  prevent:
+    premature: true
+    mature: false
 creative:
   dropsCreative: false
   blockCreativeDestroying: false

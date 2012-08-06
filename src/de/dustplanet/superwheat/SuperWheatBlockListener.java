@@ -3,7 +3,7 @@ package de.dustplanet.superwheat;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,29 +58,33 @@ public class SuperWheatBlockListener implements Listener {
 			}
 		}
 	}
-	
-	// NOT WORKING!
+
 	@EventHandler
 	public void onBlockPistonExtend (BlockPistonExtendEvent event) {
-		PistonMoveReaction reaction = event.getBlock().getPistonMoveReaction();
-		if (reaction == PistonMoveReaction.BREAK) plugin.log.info("yes");
-		if (reaction == PistonMoveReaction.BLOCK) plugin.log.info("block");
-		if (reaction == PistonMoveReaction.MOVE) plugin.log.info("move");
-		for (final Block block : event.getBlocks()) {
-			plugin.log.info(block.toString());
-			if (block.getType() == Material.CROPS) {
-				plugin.log.info("Yes");
-				// Set to air and drop. Then wait the delay and make it a premature block again
-				block.setTypeId(0);
-				if (plugin.waterDropSeeds) dropSeeds(block);
-				if (plugin.waterDropWheat) dropWheat(block);
-				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					public void run() {
-						plugin.log.info("Delay");
-						block.setTypeIdAndData(59, (byte) 0, true);
-					}
-				}, (20 * plugin.delayWater));
+		// Get the block the piston pushed
+		final Block block = event.getBlock().getRelative(event.getDirection());
+		// If the block is a wheat block
+		if (block.getType() == Material.CROPS) {
+			// Mature
+			if ((byte) block.getData() == 7) {
+				// Should we cancel this?
+				if (plugin.preventPistonGrown) event.setCancelled(true);
+				else {
+					// Set to air and drop. Then wait the delay and make it a premature block again
+					block.setTypeId(0);
+					if (plugin.pistonDropSeeds) dropSeeds(block);
+					if (plugin.pistonDropWheat) dropWheat(block);
+					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+						public void run() {
+							// First -> Farmland (soil)
+							block.getRelative(BlockFace.DOWN).setType(Material.SOIL);
+							block.setTypeIdAndData(59, (byte) 0, true);
+						}
+					}, (20 * plugin.delayPiston));
+				}
 			}
+			// MUST be a premature block, cancel it or not?
+			else if (plugin.preventPiston) event.setCancelled(true);
 		}
 	}
 
