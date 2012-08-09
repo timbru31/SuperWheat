@@ -34,10 +34,13 @@ public class SuperWheatBlockListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event)  {
+		// Physical means jump on it
 		if (event.getAction() == Action.PHYSICAL) {
 			Block block = event.getClickedBlock();
 			if (block == null) return;
+			// If the block is farmland (soil)
 			if (block.getType() == Material.SOIL && !plugin.wheatTrampling) {
+				// Deny event and set the block
 				event.setUseInteractedBlock(org.bukkit.event.Event.Result.DENY);
 				event.setCancelled(true);
 				block.setTypeIdAndData(block.getType().getId(), block.getData(), true);

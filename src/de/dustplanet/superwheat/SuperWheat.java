@@ -40,7 +40,7 @@ public class SuperWheat extends JavaPlugin {
 	// CocoaPlant delay
 	public int cocoaPlantDelayHit = 3, cocoaPlantDelayWater = 5, cocoaPlantDelayPiston = 5;
 	// Localization
-	public String message = "§6[SuperWheat] That crop isn't fully grown yet!";
+	public String message = "§6[SuperWheat] That plant isn't fully grown yet!";
 	// Creative mode
 	public boolean dropsCreative, blockCreativeDestroying;
 	public FileConfiguration config;
@@ -77,7 +77,7 @@ public class SuperWheat extends JavaPlugin {
 	private void loadConfig() {
 		config.options().header("For help please either refer to the\nforum thread: http://bit.ly/superwheatthread\nor the bukkit dev page: http://bit.ly/superwheatpage");
 		// Localization
-		config.addDefault("message", "§6[SuperWheat] That crop isn't fully grown yet!");
+		config.addDefault("message", "§6[SuperWheat] That plant isn't fully grown yet!");
 		// Creative mode
 		config.addDefault("creative.dropsCreative", false);
 		config.addDefault("creative.blockCreativeDestroying", false);
