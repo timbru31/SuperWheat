@@ -295,7 +295,7 @@ public class SuperWheatBlockListener implements Listener {
 
 	// Drops netherWart
 	private void dropNetherWart(Block block) {
-		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.NETHER_WARTS, (int) (Math.random() * 4) + 2));
+		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.NETHER_STALK, (int) (Math.random() * 4) + 2));
 	}
 
 	// Drops cocoa beans
