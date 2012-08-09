@@ -24,9 +24,25 @@ public class SuperWheat extends JavaPlugin {
 
 	public Logger log = Logger.getLogger("Minecraft");
 	private final SuperWheatBlockListener blockListener = new SuperWheatBlockListener(this);
-	public boolean preventWater = true, preventWaterGrown, dropsCreative, blockCreativeDestroying, waterDropWheat = true, waterDropSeeds, preventPiston = true, preventPistonGrown, pistonDropWheat = true, pistonDropSeeds;
-	public int delayHit = 3, delayWater = 5, delayPiston = 5;
+	// Wheat
+	public boolean wheatTrampling = true, wheatEnabled = true, wheatPreventWater = true, wheatPreventWaterGrown, wheatWaterDropSeeds, wheatWaterDropWheat = true;
+	public boolean wheatPreventPiston = true, wheatPreventPistonGrown, wheatPistonDropWheat = true, wheatPistonDropSeeds;
+	// NetherWart
+	public boolean netherWartEnabled = true, netherWartPreventWater = true, netherWartPreventWaterGrown, netherWartWaterDropNetherWart = true;
+	public boolean netherWartPreventPiston = true, netherWartPreventPistonGrown, netherWartPistonDropNetherWart = true;
+	// CocoaPlant
+	public boolean cocoaPlantEnabled = true, cocoaPlantPreventWater = true, cocoaPlantPreventWaterGrown, cocoaPlantWaterDropCocoaPlant = true;
+	public boolean cocoaPlantPreventPiston = true, cocoaPlantPreventPistonGrown, cocoaPlantPistonDropCocoaPlant = true;
+	// Wheat delay
+	public int wheatDelayHit = 3, wheatDelayWater = 5, wheatDelayPiston = 5;
+	// NetherWart delay
+	public int netherWartDelayHit = 3, netherWartDelayWater = 5, netherWartDelayPiston = 5;
+	// CocoaPlant delay
+	public int cocoaPlantDelayHit = 3, cocoaPlantDelayWater = 5, cocoaPlantDelayPiston = 5;
+	// Localization
 	public String message = "§6[SuperWheat] That crop isn't fully grown yet!";
+	// Creative mode
+	public boolean dropsCreative, blockCreativeDestroying;
 	public FileConfiguration config;
 	private File configFile;
 
@@ -60,36 +76,90 @@ public class SuperWheat extends JavaPlugin {
 
 	private void loadConfig() {
 		config.options().header("For help please either refer to the\nforum thread: http://bit.ly/superwheatthread\nor the bukkit dev page: http://bit.ly/superwheatpage");
+		// Localization
 		config.addDefault("message", "§6[SuperWheat] That crop isn't fully grown yet!");
-		config.addDefault("delayHit", 3);
-		config.addDefault("water.drops.wheat", true);
-		config.addDefault("water.drops.seed", false);
-		config.addDefault("water.prevent.premature", true);
-		config.addDefault("water.prevent.mature", false);
-		config.addDefault("water.delay", 5);
-		config.addDefault("piston.delay", 5);
-		config.addDefault("piston.drops.wheat", true);
-		config.addDefault("piston.drops.seed", false);
-		config.addDefault("piston.prevent.premature", true);
-		config.addDefault("piston.prevent.mature", false);
+		// Creative mode
 		config.addDefault("creative.dropsCreative", false);
 		config.addDefault("creative.blockCreativeDestroying", false);
+		// Wheat
+		config.addDefault("wheat.enabled", true);
+		config.addDefault("wheat.trampling", true);
+		config.addDefault("wheat.delayHit", 3);
+		config.addDefault("wheat.water.delay", 5);
+		config.addDefault("wheat.water.drops.wheat", true);
+		config.addDefault("wheat.water.drops.seed", false);
+		config.addDefault("wheat.water.prevent.premature", true);
+		config.addDefault("wheat.water.prevent.mature", false);
+		config.addDefault("wheat.piston.delay", 5);
+		config.addDefault("wheat.piston.drops.wheat", true);
+		config.addDefault("wheat.piston.drops.seed", false);
+		config.addDefault("wheat.piston.prevent.premature", true);
+		config.addDefault("wheat.piston.prevent.mature", false);
+		// NetherWart
+		config.addDefault("netherWart.enabled", true);
+		config.addDefault("netherWart.delayHit", 3);
+		config.addDefault("netherWart.water.delay", 5);
+		config.addDefault("netherWart.water.drops.netherWart", true);
+		config.addDefault("netherWart.water.prevent.premature", true);
+		config.addDefault("netherWart.water.prevent.mature", false);
+		config.addDefault("netherWart.piston.delay", 5);
+		config.addDefault("netherWart.piston.drops.netherWart", true);
+		config.addDefault("netherWart.piston.prevent.premature", true);
+		config.addDefault("netherWart.piston.prevent.mature", false);
+		// CocoaPlant
+		config.addDefault("cocoaPlant.enabled", true);
+		config.addDefault("cocoaPlant.delayHit", 3);
+		config.addDefault("cocoaPlant.water.delay", 5);
+		config.addDefault("cocoaPlant.water.drops.cocoaPlant", true);
+		config.addDefault("cocoaPlant.water.prevent.premature", true);
+		config.addDefault("cocoaPlant.water.prevent.mature", false);
+		config.addDefault("cocoaPlant.piston.delay", 5);
+		config.addDefault("cocoaPlant.piston.drops.cocoaPlant", true);
+		config.addDefault("cocoaPlant.piston.prevent.premature", true);
+		config.addDefault("cocoaPlant.piston.prevent.mature", false);
 		config.options().copyDefaults(true);
 		saveConfig();
+		// Localization
 		message = config.getString("message");
-		delayHit = config.getInt("delayHit");
-		delayWater = config.getInt("water.delayWater");
-		waterDropWheat = config.getBoolean("water.drops.wheat");
-		waterDropSeeds = config.getBoolean("water.drops.seed");
-		preventWater = config.getBoolean("water.prevent.premature");
-		preventWaterGrown = config.getBoolean("water.prevent.mature");
-		delayPiston = config.getInt("piston.delay");
-		pistonDropWheat = config.getBoolean("piston.drops.wheat");
-		pistonDropSeeds = config.getBoolean("piston.drops.seed");
-		preventPiston = config.getBoolean("piston.prevent.premature");
-		preventPistonGrown = config.getBoolean("piston.prevent.mature");
+		// Creative mode
 		dropsCreative = config.getBoolean("creative.dropsCreative");
 		blockCreativeDestroying = config.getBoolean("creative.blockCreativeDestroying");
+		// Wheat
+		wheatEnabled = config.getBoolean("wheat.enabled");
+		wheatTrampling = config.getBoolean("wheat.trampling");
+		wheatDelayHit = config.getInt("wheat.delayHit");
+		wheatDelayWater = config.getInt("wheat.water.delay");
+		wheatWaterDropWheat = config.getBoolean("wheat.water.drops.wheat");
+		wheatWaterDropSeeds = config.getBoolean("wheat.water.drops.seed");
+		wheatPreventWater = config.getBoolean("wheat.water.prevent.premature");
+		wheatPreventWaterGrown = config.getBoolean("wheat.water.prevent.mature");
+		wheatDelayPiston = config.getInt("wheat.piston.delay");
+		wheatPistonDropWheat = config.getBoolean("wheat.piston.drops.wheat");
+		wheatPistonDropSeeds = config.getBoolean("wheat.piston.drops.seed");
+		wheatPreventPiston = config.getBoolean("wheat.piston.prevent.premature");
+		wheatPreventPistonGrown = config.getBoolean("wheat.piston.prevent.mature");
+		// NetherWart
+		netherWartEnabled = config.getBoolean("netherWart.enabled");
+		netherWartDelayHit = config.getInt("netherWart.delayHit");
+		netherWartDelayWater = config.getInt("netherWart.water.delay");
+		netherWartWaterDropNetherWart = config.getBoolean("netherWart.water.drops.netherWart");
+		netherWartPreventWater = config.getBoolean("netherWart.water.prevent.premature");
+		netherWartPreventWaterGrown = config.getBoolean("netherWart.water.prevent.mature");
+		netherWartDelayPiston = config.getInt("netherWart.piston.delay");
+		netherWartPistonDropNetherWart = config.getBoolean("netherWart.piston.drops.netherWart");
+		netherWartPreventPiston = config.getBoolean("netherWart.piston.prevent.premature");
+		netherWartPreventPistonGrown = config.getBoolean("netherWart.piston.prevent.mature");
+		// CocoaBeans
+		cocoaPlantEnabled = config.getBoolean("cocoaPlant.enabled");
+		cocoaPlantDelayHit = config.getInt("cocoaPlant.delayHit");
+		cocoaPlantDelayWater = config.getInt("cocoaPlant.water.delay");
+		cocoaPlantWaterDropCocoaPlant = config.getBoolean("cocoaPlant.water.drops.cocoaPlant");
+		cocoaPlantPreventWater = config.getBoolean("cocoaPlant.water.prevent.premature");
+		cocoaPlantPreventWaterGrown = config.getBoolean("cocoaPlant.water.prevent.mature");
+		cocoaPlantDelayPiston = config.getInt("cocoaPlant.piston.delay");
+		cocoaPlantPistonDropCocoaPlant = config.getBoolean("cocoaPlant.piston.drops.cocoaPlant");
+		cocoaPlantPreventPiston = config.getBoolean("cocoaPlant.piston.prevent.premature");
+		cocoaPlantPreventPistonGrown = config.getBoolean("cocoaPlant.piston.prevent.mature");
 	}
 	
 	// If no config is found, copy the default one!
