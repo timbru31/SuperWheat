@@ -3,6 +3,8 @@ main: de.dustplanet.superwheat.SuperWheat
 version: 0.5
 author: xGhOsTkiLLeRx
 authors: [thescreem]
+website: http://bit.ly/superwheatpage
+website: http://bit.ly/superwheatthread
 permissions:
     SuperWheat.*:
         children:

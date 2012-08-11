@@ -67,6 +67,8 @@ public class SuperWheatBlockListener implements Listener {
 						if (plugin.wheatWaterDropWheat) dropWheat(block);
 						plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 							public void run() {
+								// First -> Farmland (soil)
+								block.getRelative(BlockFace.DOWN).setType(Material.SOIL);
 								block.setTypeIdAndData(Material.CROPS.getId(), (byte) 0, true);
 							}
 						}, (20 * plugin.wheatDelayWater));
@@ -212,6 +214,8 @@ public class SuperWheatBlockListener implements Listener {
 				// like right when you just plant it. With a light delay...
 				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
+						// First -> Farmland (soil)
+						block.getRelative(BlockFace.DOWN).setType(Material.SOIL);
 						block.setTypeIdAndData(59, (byte) 0, true);
 					}
 				}, (20 * plugin.wheatDelayHit));
