@@ -88,6 +88,9 @@ Description: Allows you to destroy not full grown crops
 SuperWheat.wheat.seeds
 Description: Drops seeds, too
 
+SuperWheat.wheat.noseeds
+Description: Allows auto re-plant if no seeds are in the inv
+
 SuperWheat.netherwart.*
 Description: Includes all permissions for nether wart
 
@@ -97,6 +100,9 @@ Description: Automatically re-grows the harvested nether wart
 SuperWheat.netherwart.destroying
 Description: Allows you to destroy not full grown plant
 
+SuperWheat.netherwart.noseeds
+Description: Allows auto re-plant if no nether wart is in the inv
+
 SuperWheat.cocoaplant.*
 Description: Includes all permissions for cocoa (plant)
 
@@ -105,3 +111,6 @@ Description: Automatically re-grows the harvested cocoa
 
 SuperWheat.cocoaplant.destroying
 Description: Allows you to destroy not full grown plant
+
+SuperWheat.cocoaplant.noseeds
+Description: Allows auto re-plant if no cocoa beans are in the inv
