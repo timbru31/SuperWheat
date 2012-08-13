@@ -1,6 +1,6 @@
 name: SuperWheat
 main: de.dustplanet.superwheat.SuperWheat
-version: 0.5
+version: 0.6
 author: xGhOsTkiLLeRx
 authors: [thescreem]
 website: http://bit.ly/superwheatpage
@@ -16,6 +16,7 @@ permissions:
             SuperWheat.wheat.destroying: true
             SuperWheat.wheat.regrowing: true
             SuperWheat.wheat.seeds: true
+            SuperWheat.wheat.noseeds: true
     SuperWheat.wheat.destroying:
         default: op
         description: Allows destroying of crops
@@ -25,23 +26,34 @@ permissions:
     SuperWheat.wheat.seeds:
         default: op
         description: Allows getting of seeds, too
+    SuperWheat.wheat.noseeds:
+        default: op
+        description: Doesn't require the seeds in the inv
     SuperWheat.netherwart*:
         children:
             SuperWheat.netherwart.destroying: true
             SuperWheat.netherwart.regrowing: true
+            SuperWheat.netherwart.noseeds: true
     SuperWheat.netherwart.destroying:
         default: op
         description: Allows destroying of crops
     SuperWheat.netherwart.regrowing:
         default: op
         description: Allows regrowing of crops
+    SuperWheat.netherwart.noseeds:
+        default: op
+        description: Doesn't require the seeds in the inv
     SuperWheat.cocoaplant*:
         children:
             SuperWheat.cocoaplant.destroying: true
             SuperWheat.cocoaplant.regrowing: true
+            SuperWheat.cocoaplant.noseeds: true
     SuperWheat.cocoaplant.destroying:
         default: op
         description: Allows destroying of crops
     SuperWheat.cocoaplant.regrowing:
         default: op
         description: Allows regrowing of crops
+    SuperWheat.cocoaplant.noseeds:
+        default: op
+        description: Doesn't require the seeds in the inv

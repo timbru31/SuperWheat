@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -208,6 +209,12 @@ public class SuperWheatBlockListener implements Listener {
 			// Else, if the data for the block IS 7 (The crop is fully grown) and the player
 			// has the permission node so the crop automatically re-grows after being harvested...
 			else if((byte) block.getData() == 7 && player.hasPermission("SuperWheat.wheat.regrowing")) {
+				if (!player.hasPermission("SuperWheat.wheat.noseeds")) {
+					if (player.getInventory().contains(Material.SEEDS)) {
+						removeInventoryItems(player.getInventory(), Material.SEEDS, false, 1);
+					}
+					else return;
+				}
 				event.setCancelled(true);
 				block.setTypeId(0);
 				// Set the block to a data value of 0, which is what the crop looks
@@ -242,6 +249,12 @@ public class SuperWheatBlockListener implements Listener {
 			// Else, if the data for the block IS 3 (The crop is fully grown) and the player
 			// has the permission node so the crop automatically re-grows after being harvested...
 			else if ((byte) block.getData() == 3 && player.hasPermission("SuperWheat.netherwart.regrowing")) {
+				if (!player.hasPermission("SuperWheat.wheat.noseeds")) {
+					if (player.getInventory().contains(Material.NETHER_STALK)) {
+						removeInventoryItems(player.getInventory(), Material.NETHER_STALK, false, 1);
+					}
+					else return;
+				}
 				event.setCancelled(true);
 				block.setTypeId(0);
 				// Set the block to a data value of 0, which is what the wart looks
@@ -270,6 +283,14 @@ public class SuperWheatBlockListener implements Listener {
 			// Else, if the data for the block IS 8 or higher (The crop is fully grown) and the player
 			// has the permission node so the crop automatically re-grows after being harvested...
 			else if ((byte) block.getData() >= 8 && player.hasPermission("SuperWheat.cocoaplant.regrowing")) {
+				if (!player.hasPermission("SuperWheat.cocoaplant.noseeds")) {
+					ItemStack i = new ItemStack(Material.INK_SACK);
+					i.setDurability((short) 3);
+					if (containsWithDurability(player.getInventory(), Material.INK_SACK, (short) 3)) {
+						removeInventoryItems(player.getInventory(), Material.INK_SACK, true, 1);
+					}
+					else return;
+				}
 				event.setCancelled(true);
 				final byte data = (byte) (block.getData() - 8);
 				block.setTypeId(0);
@@ -305,5 +326,32 @@ public class SuperWheatBlockListener implements Listener {
 	// Drops cocoa beans
 	private void dropCocoaBeans(Block block) {
 		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.INK_SACK, 3, (short) 3));
+	}
+
+	// Removes item
+	private void removeInventoryItems(Inventory inv, Material type, boolean cocoa, int amount) {
+		for (ItemStack is : inv.getContents()) {
+			if (is != null && is.getType() == type) {
+				if (!cocoa || (cocoa && is.getDurability() == (short) 3)) {
+					int newamount = is.getAmount() - amount;
+					if (newamount > 0) {
+						is.setAmount(newamount);
+						break;
+					} else {
+						inv.remove(is);
+						amount = -newamount;
+						if (amount == 0) break;
+					}
+				}
+			}
+		}
+	}
+
+	// Checks with the durability, too
+	private boolean containsWithDurability(Inventory inventory, Material inkSack, short s) {
+		for (ItemStack is : inventory) {
+			if (is != null && is.getType() == inkSack && is.getDurability() == s) return true;
+		}
+		return false;
 	}
 }
