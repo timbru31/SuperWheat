@@ -11,7 +11,7 @@ Standard config:
 # For help please either refer to the
 # forum thread: http://bit.ly/superwheatthread
 # or the bukkit dev page: http://bit.ly/superwheatpage
-message: §6[SuperWheat] That plant isn't fully grown yet!
+message: '&6[SuperWheat] That plant isn't fully grown yet!'
 creative:
   dropsCreative: false
   blockCreativeDestroying: false

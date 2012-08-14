@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Logger;
+
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -40,7 +42,7 @@ public class SuperWheat extends JavaPlugin {
 	// CocoaPlant delay
 	public int cocoaPlantDelayHit = 3, cocoaPlantDelayWater = 5, cocoaPlantDelayPiston = 5;
 	// Localization
-	public String message = "§6[SuperWheat] That plant isn't fully grown yet!";
+	public String message = ChatColor.GOLD + "[SuperWheat] That plant isn't fully grown yet!";
 	// Creative mode
 	public boolean dropsCreative, blockCreativeDestroying;
 	public FileConfiguration config;
@@ -77,7 +79,7 @@ public class SuperWheat extends JavaPlugin {
 	private void loadConfig() {
 		config.options().header("For help please either refer to the\nforum thread: http://bit.ly/superwheatthread\nor the bukkit dev page: http://bit.ly/superwheatpage");
 		// Localization
-		config.addDefault("message", "§6[SuperWheat] That plant is not fully grown yet!");
+		config.addDefault("message", "&6[SuperWheat] That plant is not fully grown yet!");
 		// Creative mode
 		config.addDefault("creative.dropsCreative", false);
 		config.addDefault("creative.blockCreativeDestroying", false);
@@ -120,7 +122,7 @@ public class SuperWheat extends JavaPlugin {
 		config.options().copyDefaults(true);
 		saveConfig();
 		// Localization
-		message = config.getString("message");
+		message = ChatColor.translateAlternateColorCodes('\u0026', config.getString("message"));
 		// Creative mode
 		dropsCreative = config.getBoolean("creative.dropsCreative");
 		blockCreativeDestroying = config.getBoolean("creative.blockCreativeDestroying");

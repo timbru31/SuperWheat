@@ -203,7 +203,7 @@ public class SuperWheatBlockListener implements Listener {
 			if((byte) block.getData() != 7) {
 				if (!player.hasPermission("SuperWheat.wheat.destroying") || plugin.blockCreativeDestroying) {
 					event.setCancelled(true);
-					player.sendMessage(plugin.config.getString("message"));
+					player.sendMessage(plugin.message);
 				}
 			}
 			// Else, if the data for the block IS 7 (The crop is fully grown) and the player
@@ -243,7 +243,7 @@ public class SuperWheatBlockListener implements Listener {
 			if ((byte) block.getData() != 3) {
 				if (!player.hasPermission("SuperWheat.netherwart.destroying") || plugin.blockCreativeDestroying) {
 					event.setCancelled(true);
-					player.sendMessage(plugin.config.getString("message"));
+					player.sendMessage(plugin.message);
 				}
 			}
 			// Else, if the data for the block IS 3 (The crop is fully grown) and the player
@@ -277,7 +277,7 @@ public class SuperWheatBlockListener implements Listener {
 			if ((byte) block.getData() < 8) {
 				if (!player.hasPermission("SuperWheat.cocoaplant.destroying") || plugin.blockCreativeDestroying) {
 					event.setCancelled(true);
-					player.sendMessage(plugin.config.getString("message"));
+					player.sendMessage(plugin.message);
 				}
 			}
 			// Else, if the data for the block IS 8 or higher (The crop is fully grown) and the player
