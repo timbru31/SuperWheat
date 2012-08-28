@@ -21,7 +21,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 
 public class SuperWheat extends JavaPlugin {
-
 	public Logger log = Logger.getLogger("Minecraft");
 	private final SuperWheatBlockListener blockListener = new SuperWheatBlockListener(this);
 	// Wheat
