@@ -5,10 +5,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Logger;
-
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -48,13 +46,6 @@ public class SuperWheat extends JavaPlugin {
 	public FileConfiguration config;
 	private File configFile;
 
-	// Shutdown
-	public void onDisable() {
-		// Message
-		PluginDescriptionFile pdfFile = this.getDescription();
-		log.info(pdfFile.getName() + " " + pdfFile.getVersion() + " is disabled!");
-	}
-
 	// Start
 	public void onEnable() {
 		// Events
@@ -69,11 +60,6 @@ public class SuperWheat extends JavaPlugin {
 		}
 		config = this.getConfig();
 		loadConfig();
-
-		// Message
-		PluginDescriptionFile pdfFile = this.getDescription();
-		log.info(pdfFile.getName() + " " + pdfFile.getVersion() + " is enabled!");
-		
 	}
 
 	private void loadConfig() {

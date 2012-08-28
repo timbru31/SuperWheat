@@ -28,7 +28,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class SuperWheatBlockListener implements Listener {
 
-	public SuperWheat plugin;
+	private SuperWheat plugin;
 	public SuperWheatBlockListener(SuperWheat instance){
 		plugin = instance;
 	}
