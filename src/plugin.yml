@@ -1,6 +1,6 @@
 name: SuperWheat
 main: de.dustplanet.superwheat.SuperWheat
-version: 0.6.1
+version: 0.7
 author: xGhOsTkiLLeRx
 authors: [thescreem]
 website: http://bit.ly/superwheatpage
@@ -11,7 +11,10 @@ permissions:
             SuperWheat.wheat.*: true
             SuperWheat.netherWart.*: true
             SuperWheat.cocoaPlant.*: true
-    SuperWheat.wheat*:
+            SuperWheat.carrot.*: true
+            SuperWheat.potato.*: true
+            SuperWheat.sugarcane.*: true
+    SuperWheat.wheat.*:
         children:
             SuperWheat.wheat.destroying: true
             SuperWheat.wheat.regrowing: true
@@ -29,31 +32,69 @@ permissions:
     SuperWheat.wheat.noseeds:
         default: op
         description: Doesn't require the seeds in the inv
-    SuperWheat.netherwart*:
+    SuperWheat.netherwart.*:
         children:
             SuperWheat.netherwart.destroying: true
             SuperWheat.netherwart.regrowing: true
             SuperWheat.netherwart.noseeds: true
     SuperWheat.netherwart.destroying:
         default: op
-        description: Allows destroying of crops
+        description: Allows destroying of nether wart
     SuperWheat.netherwart.regrowing:
         default: op
-        description: Allows regrowing of crops
+        description: Allows regrowing of nether wart
     SuperWheat.netherwart.noseeds:
         default: op
-        description: Doesn't require the seeds in the inv
-    SuperWheat.cocoaplant*:
+        description: Doesn't require the nether wart in the inv
+    SuperWheat.cocoaplant.*:
         children:
             SuperWheat.cocoaplant.destroying: true
             SuperWheat.cocoaplant.regrowing: true
             SuperWheat.cocoaplant.noseeds: true
     SuperWheat.cocoaplant.destroying:
         default: op
-        description: Allows destroying of crops
+        description: Allows destroying of cocoa plants
     SuperWheat.cocoaplant.regrowing:
         default: op
-        description: Allows regrowing of crops
+        description: Allows regrowing of cocoa plants
     SuperWheat.cocoaplant.noseeds:
         default: op
-        description: Doesn't require the seeds in the inv
+        description: Doesn't require the cocoa in the inv
+    SuperWheat.carrot.*:
+        children:
+            SuperWheat.carrot.destroying: true
+            SuperWheat.carrot.regrowing: true
+            SuperWheat.carrot.noseeds: true
+    SuperWheat.carrot.destroying:
+        default: op
+        description: Allows destroying of carrots
+    SuperWheat.carrot.regrowing:
+        default: op
+        description: Allows regrowing of carrots
+    SuperWheat.carrot.noseeds:
+        default: op
+        description: Doesn't require the carrots in the inv
+    SuperWheat.potato.*:
+        children:
+            SuperWheat.potato.destroying: true
+            SuperWheat.potato.regrowing: true
+            SuperWheat.potato.noseeds: true
+    SuperWheat.potato.destroying:
+        default: op
+        description: Allows destroying of potatoes
+    SuperWheat.potato.regrowing:
+        default: op
+        description: Allows regrowing of potatoes
+    SuperWheat.potato.noseeds:
+        default: op
+        description: Doesn't require the potatoes in the inv
+    SuperWheat.sugarcane.*:
+        children:
+            SuperWheat.sugarcane.regrowing: true
+            SuperWheat.sugarcane.noseeds: true
+    SuperWheat.sugarcane.regrowing:
+        default: op
+        description: Allows regrowing of sugar canes
+    SuperWheat.sugarcane.noseeds:
+        default: op
+        description: Doesn't require the sugar canes in the inv

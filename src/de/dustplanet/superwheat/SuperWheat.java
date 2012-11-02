@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -21,7 +20,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 
 public class SuperWheat extends JavaPlugin {
-	public Logger log = Logger.getLogger("Minecraft");
 	private final SuperWheatBlockListener blockListener = new SuperWheatBlockListener(this);
 	// Wheat
 	public boolean wheatTrampling = true, wheatEnabled = true, wheatPreventWater = true, wheatPreventWaterGrown, wheatWaterDropSeeds, wheatWaterDropWheat = true;
@@ -32,14 +30,30 @@ public class SuperWheat extends JavaPlugin {
 	// CocoaPlant
 	public boolean cocoaPlantEnabled = true, cocoaPlantPreventWater = true, cocoaPlantPreventWaterGrown, cocoaPlantWaterDropCocoaPlant = true;
 	public boolean cocoaPlantPreventPiston = true, cocoaPlantPreventPistonGrown, cocoaPlantPistonDropCocoaPlant = true;
+	// Carrot
+	public boolean carrotTrampling = true, carrotEnabled = true, carrotPreventWater = true, carrotPreventWaterGrown, carrotWaterDropCarrot = true;
+	public boolean carrotPreventPiston = true, carrotPreventPistonGrown, carrotPistonDropCarrot = true;
+	// Potato
+	public boolean potatoTrampling = true, potatoEnabled = true, potatoPreventWater = true, potatoPreventWaterGrown, potatoWaterDropPotato = true;
+	public boolean potatoPreventPiston = true, potatoPreventPistonGrown, potatoPistonDropPotato = true;
+	// SugarCane
+	public boolean sugarCaneEnabled = false, sugarCanePreventWater = false, sugarCanePreventPiston = false, sugarCaneWaterDropSugarCane = true;
+	public boolean sugarCanePistonDropSugarCane = true;
 	// Wheat delay
 	public int wheatDelayHit = 3, wheatDelayWater = 5, wheatDelayPiston = 5;
 	// NetherWart delay
 	public int netherWartDelayHit = 3, netherWartDelayWater = 5, netherWartDelayPiston = 5;
 	// CocoaPlant delay
 	public int cocoaPlantDelayHit = 3, cocoaPlantDelayWater = 5, cocoaPlantDelayPiston = 5;
+	// Carrot delay
+	public int carrotDelayHit = 3, carrotDelayWater = 5, carrotDelayPiston = 5;
+	// Potato delay
+	public int potatoDelayHit = 3, potatoDelayWater = 5, potatoDelayPiston = 5;
+	// SugarCane delay
+	public int sugarCaneDelayHit = 3, sugarCaneDelayWater = 5, sugarCaneDelayPiston = 5;
 	// Localization
 	public String message = ChatColor.GOLD + "[SuperWheat] That plant isn't fully grown yet!";
+	public boolean messageEnabled = true;
 	// Creative mode
 	public boolean dropsCreative, blockCreativeDestroying;
 	public FileConfiguration config;
@@ -64,6 +78,7 @@ public class SuperWheat extends JavaPlugin {
 	private void loadConfig() {
 		config.options().header("For help please either refer to the\nforum thread: http://bit.ly/superwheatthread\nor the bukkit dev page: http://bit.ly/superwheatpage");
 		// Localization
+		config.addDefault("message-enabled", true);
 		config.addDefault("message", "&6[SuperWheat] That plant is not fully grown yet!");
 		// Creative mode
 		config.addDefault("creative.dropsCreative", false);
@@ -104,10 +119,44 @@ public class SuperWheat extends JavaPlugin {
 		config.addDefault("cocoaPlant.piston.drops.cocoaPlant", true);
 		config.addDefault("cocoaPlant.piston.prevent.premature", true);
 		config.addDefault("cocoaPlant.piston.prevent.mature", false);
+		// Carrot
+		config.addDefault("carrot.enabled", true);
+		config.addDefault("carrot.trampling", true);
+		config.addDefault("carrot.delayHit", 3);
+		config.addDefault("carrot.water.delay", 5);
+		config.addDefault("carrot.water.drops.carrot", true);
+		config.addDefault("carrot.water.prevent.premature", true);
+		config.addDefault("carrot.water.prevent.mature", false);
+		config.addDefault("carrot.piston.delay", 5);
+		config.addDefault("carrot.piston.drops.carrot", true);
+		config.addDefault("carrot.piston.prevent.premature", true);
+		config.addDefault("carrot.piston.prevent.mature", false);
+		// Potato
+		config.addDefault("potato.enabled", true);
+		config.addDefault("potato.trampling", true);
+		config.addDefault("potato.delayHit", 3);
+		config.addDefault("potato.water.delay", 5);
+		config.addDefault("potato.water.drops.potato", true);
+		config.addDefault("potato.water.prevent.premature", true);
+		config.addDefault("potato.water.prevent.mature", false);
+		config.addDefault("potato.piston.delay", 5);
+		config.addDefault("potato.piston.drops.potato", true);
+		config.addDefault("potato.piston.prevent.premature", true);
+		config.addDefault("potato.piston.prevent.mature", false);
+		// SugarCane
+		config.addDefault("sugarCane.enabled", false);
+		config.addDefault("sugarCane.delayHit", 3);
+		config.addDefault("sugarCane.water.delay", 5);
+		config.addDefault("sugarCane.water.drops.sugarCane", true);
+		config.addDefault("sugarCane.water.prevent", false);
+		config.addDefault("sugarCane.piston.delay", 5);
+		config.addDefault("sugarCane.piston.drops.sugarCane", true);
+		config.addDefault("sugarCane.piston.prevent", false);
 		config.options().copyDefaults(true);
 		saveConfig();
 		// Localization
 		message = ChatColor.translateAlternateColorCodes('\u0026', config.getString("message"));
+		messageEnabled = config.getBoolean("message-enabled");
 		// Creative mode
 		dropsCreative = config.getBoolean("creative.dropsCreative");
 		blockCreativeDestroying = config.getBoolean("creative.blockCreativeDestroying");
@@ -147,6 +196,39 @@ public class SuperWheat extends JavaPlugin {
 		cocoaPlantPistonDropCocoaPlant = config.getBoolean("cocoaPlant.piston.drops.cocoaPlant");
 		cocoaPlantPreventPiston = config.getBoolean("cocoaPlant.piston.prevent.premature");
 		cocoaPlantPreventPistonGrown = config.getBoolean("cocoaPlant.piston.prevent.mature");
+		// Carrot
+		carrotEnabled = config.getBoolean("carrot.enabled");
+		carrotTrampling = config.getBoolean("carrot.trampling");
+		carrotDelayHit = config.getInt("carrot.delayHit");
+		carrotDelayWater = config.getInt("carrot.water.delay");
+		carrotWaterDropCarrot = config.getBoolean("carrot.water.drops.carrot");
+		carrotPreventWater = config.getBoolean("carrot.water.prevent.premature");
+		carrotPreventWaterGrown = config.getBoolean("carrot.water.prevent.mature");
+		carrotDelayPiston = config.getInt("carrot.piston.delay");
+		carrotPistonDropCarrot = config.getBoolean("carrot.piston.drops.carrot");
+		carrotPreventPiston = config.getBoolean("carrot.piston.prevent.premature");
+		carrotPreventPistonGrown = config.getBoolean("carrot.piston.prevent.mature");
+		// Potato
+		potatoEnabled = config.getBoolean("potato.enabled");
+		potatoTrampling = config.getBoolean("potato.trampling");
+		potatoDelayHit = config.getInt("potato.delayHit");
+		potatoDelayWater = config.getInt("potato.water.delay");
+		potatoWaterDropPotato = config.getBoolean("potato.water.drops.potato");
+		potatoPreventWater = config.getBoolean("potato.water.prevent.premature");
+		potatoPreventWaterGrown = config.getBoolean("potato.water.prevent.mature");
+		potatoDelayPiston = config.getInt("potato.piston.delay");
+		potatoPistonDropPotato = config.getBoolean("potato.piston.drops.potato");
+		potatoPreventPiston = config.getBoolean("potato.piston.prevent.premature");
+		potatoPreventPistonGrown = config.getBoolean("potato.piston.prevent.mature");
+		// SugarCane
+		sugarCaneEnabled = config.getBoolean("sugarCane.enabled");
+		sugarCaneDelayHit = config.getInt("sugarCane.delayHit");
+		sugarCaneDelayWater = config.getInt("sugarCane.water.delay");
+		sugarCaneWaterDropSugarCane = config.getBoolean("sugarCane.water.drops.sugarCane");
+		sugarCanePreventWater = config.getBoolean("sugarCane.water.prevent");
+		sugarCaneDelayPiston = config.getInt("sugarCane.piston.delay");
+		sugarCanePistonDropSugarCane = config.getBoolean("sugarCane.piston.drops.sugarCane");
+		sugarCanePreventPiston = config.getBoolean("sugarCane.piston.prevent");
 	}
 	
 	// If no config is found, copy the default one!

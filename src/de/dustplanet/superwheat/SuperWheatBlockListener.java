@@ -39,8 +39,10 @@ public class SuperWheatBlockListener implements Listener {
 		if (event.getAction() == Action.PHYSICAL) {
 			Block block = event.getClickedBlock();
 			if (block == null) return;
-			// If the block is farmland (soil)
-			if (block.getType() == Material.SOIL && !plugin.wheatTrampling) {
+			// If the block is farmland (soil) & matches any of the no tramplign blocks
+			if (block.getType() == Material.SOIL && ((!plugin.wheatTrampling && block.getRelative(BlockFace.UP).getType() == Material.CROPS)
+					|| (!plugin.carrotTrampling && block.getRelative(BlockFace.UP).getType() == Material.CARROT)
+					|| (!plugin.potatoTrampling && block.getRelative(BlockFace.UP).getType() == Material.POTATO))){
 				// Deny event and set the block
 				event.setUseInteractedBlock(org.bukkit.event.Event.Result.DENY);
 				event.setCancelled(true);
@@ -53,72 +55,93 @@ public class SuperWheatBlockListener implements Listener {
 	public void onBlockFromTo(BlockFromToEvent event) {
 		// If wart flows "over" it
 		if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.STATIONARY_WATER) {
+			final Block block = event.getToBlock();
+			byte data = block.getData();
 			// If the block is a wheat
 			if (event.getToBlock().getType() == Material.CROPS && plugin.wheatEnabled) {
-				final Block block = event.getToBlock();
-				// If water flows "over" it
 				// Fully grown
-				if ((byte) block.getData() == 7) {
+				if (data == 7) {
 					// Should we cancel this?
 					if (plugin.wheatPreventWaterGrown) event.setCancelled(true);
 					else {
 						// Set to air and drop. Then wait the delay and make it a premature block again
-						block.setTypeId(0);
 						if (plugin.wheatWaterDropSeeds) dropSeeds(block);
 						if (plugin.wheatWaterDropWheat) dropWheat(block);
-						plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-							public void run() {
-								// First -> Farmland (soil)
-								block.getRelative(BlockFace.DOWN).setType(Material.SOIL);
-								block.setTypeIdAndData(Material.CROPS.getId(), (byte) 0, true);
-							}
-						}, (20 * plugin.wheatDelayWater));
+						blockSchedulder(block, Material.CROPS.getId(), (byte) 0, plugin.wheatDelayWater, true);
 					}
 				}
 				// MUST be a premature block, cancel it or not?
 				else if (plugin.wheatPreventWater) event.setCancelled(true);
 			}
+			// If the block is a nether warts block
 			else if (event.getToBlock().getType() == Material.NETHER_WARTS && plugin.netherWartEnabled) {
-				final Block block = event.getToBlock();
 				// Fully grown
-				if ((byte) block.getData() == 3) {
+				if (data == 3) {
 					// Should we cancel this?
 					if (plugin.netherWartPreventWaterGrown) event.setCancelled(true);
 					else {
 						// Set to air and drop. Then wait the delay and make it a premature block again
-						block.setTypeId(0);
 						if (plugin.netherWartWaterDropNetherWart) dropNetherWart(block);
-						plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-							public void run() {
-								block.setTypeIdAndData(Material.NETHER_WARTS.getId(), (byte) 0, true);
-							}
-						}, (20 * plugin.netherWartDelayWater));
+						blockSchedulder(block, Material.NETHER_WARTS.getId(), (byte) 0, plugin.netherWartDelayWater, false);
 					}
 				}
 				// MUST be a premature block, cancel it or not?
 				else if (plugin.netherWartPreventWater) event.setCancelled(true);
 			}
+			// If the block is cocoa block
 			else if (event.getToBlock().getType() == Material.COCOA && plugin.cocoaPlantEnabled) {
-				final Block block = event.getToBlock();
-				// If water flows "over" it
 				// Fully grown
-				if ((byte) block.getData() >= 8) {
+				if (data >= 8) {
 					// Should we cancel this?
 					if (plugin.cocoaPlantPreventWaterGrown) event.setCancelled(true);
 					else {
-						final byte data = (byte) (block.getData() - 8);
+						final byte dataNew = (byte) (block.getData() - 8);
 						// Set to air and drop. Then wait the delay and make it a premature block again
-						block.setTypeId(0);
 						if (plugin.cocoaPlantWaterDropCocoaPlant) dropCocoaBeans(block);
-						plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-							public void run() {
-								block.setTypeIdAndData(Material.COCOA.getId(), data, true);
-							}
-						}, (20 * plugin.cocoaPlantDelayWater));
+						blockSchedulder(block, Material.COCOA.getId(), dataNew, plugin.cocoaPlantDelayWater, false);
+	
 					}
 				}
 				// MUST be a premature block, cancel it or not?
 				else if (plugin.cocoaPlantPreventWater) event.setCancelled(true);
+			}
+			// If the block is carrot block
+			else if (event.getToBlock().getType() == Material.CARROT && plugin.carrotEnabled) {
+				// Fully grown
+				if (data == 7) {
+					// Should we cancel this?
+					if (plugin.carrotPreventWaterGrown) event.setCancelled(true);
+					else {
+						// Set to air and drop. Then wait the delay and make it a premature block again
+						if (plugin.carrotWaterDropCarrot) dropCarrot(block);
+						blockSchedulder(block, Material.CARROT.getId(), (byte) 0, plugin.carrotDelayWater, true);
+					}
+				}
+				// MUST be a premature block, cancel it or not?
+				else if (plugin.carrotPreventWater) event.setCancelled(true);
+			}
+			// If the block is potato block
+			else if (event.getToBlock().getType() == Material.POTATO && plugin.potatoEnabled) {
+				// Fully grown
+				if (data == 7) {
+					// Should we cancel this?
+					if (plugin.potatoPreventWaterGrown) event.setCancelled(true);
+					else {
+						// Set to air and drop. Then wait the delay and make it a premature block again
+						if (plugin.potatoWaterDropPotato) dropPotato(block);
+						blockSchedulder(block, Material.POTATO.getId(), (byte) 0, plugin.potatoDelayWater, true);
+					}
+				}
+				// MUST be a premature block, cancel it or not?
+				else if (plugin.potatoPreventWater) event.setCancelled(true);
+			}
+			else if (event.getToBlock().getType() == Material.SUGAR_CANE_BLOCK && plugin.sugarCaneEnabled) {
+				if (plugin.sugarCanePreventWater) event.setCancelled(true);
+				else {
+					// Set to air and drop. Then wait the delay and make it a premature block again
+					if (plugin.sugarCaneWaterDropSugarCane) dropSugarCane(block);
+					blockSchedulder(block, Material.SUGAR_CANE_BLOCK.getId(), (byte) 0, plugin.sugarCaneDelayWater, true);
+				}
 			}
 		}
 	}
@@ -127,24 +150,18 @@ public class SuperWheatBlockListener implements Listener {
 	public void onBlockPistonExtend (BlockPistonExtendEvent event) {
 		// Get the block the piston pushed
 		final Block block = event.getBlock().getRelative(event.getDirection());
+		byte data = block.getData();
 		// If the block is a wheat block
 		if (block.getType() == Material.CROPS && plugin.wheatEnabled) {
 			// Mature
-			if ((byte) block.getData() == 7) {
+			if (data == 7) {
 				// Should we cancel this?
 				if (plugin.wheatPreventPistonGrown) event.setCancelled(true);
 				else {
 					// Set to air and drop. Then wait the delay and make it a premature block again
-					block.setTypeId(0);
 					if (plugin.wheatPistonDropSeeds) dropSeeds(block);
 					if (plugin.wheatPistonDropWheat) dropWheat(block);
-					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						public void run() {
-							// First -> Farmland (soil)
-							block.getRelative(BlockFace.DOWN).setType(Material.SOIL);
-							block.setTypeIdAndData(Material.CROPS.getId(), (byte) 0, true);
-						}
-					}, (20 * plugin.wheatDelayPiston));
+					blockSchedulder(block, Material.CROPS.getId(), (byte) 0, plugin.wheatDelayPiston, true);
 				}
 			}
 			// MUST be a premature block, cancel it or not?
@@ -152,18 +169,13 @@ public class SuperWheatBlockListener implements Listener {
 		}
 		else if (block.getType() == Material.NETHER_WARTS && plugin.netherWartEnabled) {
 			// Mature
-			if ((byte) block.getData() == 3) {
+			if (data == 3) {
 				// Should we cancel this?
 				if (plugin.netherWartPreventPistonGrown) event.setCancelled(true);
 				else {
 					// Set to air and drop. Then wait the delay and make it a premature block again
-					block.setTypeId(0);
 					if (plugin.netherWartPistonDropNetherWart) dropNetherWart(block);
-					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						public void run() {
-							block.setTypeIdAndData(Material.NETHER_WARTS.getId(), (byte) 0, true);
-						}
-					}, (20 * plugin.netherWartDelayPiston));
+					blockSchedulder(block, Material.NETHER_WARTS.getId(), (byte) 0, plugin.netherWartDelayPiston, false);
 				}
 			}
 			// MUST be a premature block, cancel it or not?
@@ -171,44 +183,77 @@ public class SuperWheatBlockListener implements Listener {
 		}
 		else if (block.getType() == Material.COCOA && plugin.cocoaPlantEnabled) {
 			// Mature
-			if ((byte) block.getData() >= 8) {
+			if (data >= 8) {
 				// Should we cancel this?
 				if (plugin.cocoaPlantPreventPistonGrown) event.setCancelled(true);
 				else {
-					final byte data = (byte) (block.getData() - 8);
+					// Minus 8 to keep the relative
+					final byte dataNew = (byte) (block.getData() - 8);
 					// Set to air and drop. Then wait the delay and make it a premature block again
-					block.setTypeId(0);
 					if (plugin.cocoaPlantPistonDropCocoaPlant) dropCocoaBeans(block);
-					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						public void run() {
-							block.setTypeIdAndData(Material.COCOA.getId(), data, true);
-						}
-					}, (20 * plugin.cocoaPlantDelayPiston));
+					blockSchedulder(block, Material.COCOA.getId(), dataNew, plugin.cocoaPlantDelayPiston, false);
 				}
 			}
 			// MUST be a premature block, cancel it or not?
 			else if (plugin.cocoaPlantPreventPiston) event.setCancelled(true);
+		}
+		else if (block.getType() == Material.CARROT && plugin.carrotEnabled) {
+			// Mature
+			if (data == 7) {
+				// Should we cancel this?
+				if (plugin.carrotPreventPistonGrown) event.setCancelled(true);
+				else {
+					// Set to air and drop. Then wait the delay and make it a premature block again
+					if (plugin.carrotPistonDropCarrot) dropCarrot(block);
+					blockSchedulder(block, Material.CARROT.getId(), (byte) 0, plugin.carrotDelayPiston, true);
+				}
+			}
+			// MUST be a premature block, cancel it or not?
+			else if (plugin.wheatPreventPiston) event.setCancelled(true);
+		}
+		else if (block.getType() == Material.POTATO && plugin.potatoEnabled) {
+			// Mature
+			if (data == 7) {
+				// Should we cancel this?
+				if (plugin.potatoPreventPistonGrown) event.setCancelled(true);
+				else {
+					// Set to air and drop. Then wait the delay and make it a premature block again
+					if (plugin.potatoPistonDropPotato) dropPotato(block);
+					blockSchedulder(block, Material.POTATO.getId(), (byte) 0, plugin.potatoDelayPiston, true);
+				}
+			}
+			// MUST be a premature block, cancel it or not?
+			else if (plugin.wheatPreventPiston) event.setCancelled(true);
+		}
+		else if (block.getType() == Material.SUGAR_CANE_BLOCK && plugin.sugarCaneEnabled) {
+			if (plugin.sugarCanePreventPiston) event.setCancelled(true);
+			else {
+				// Set to air and drop. Then wait the delay and make it a premature block again
+				if (plugin.sugarCanePistonDropSugarCane) dropSugarCane(block);
+				blockSchedulder(block, Material.SUGAR_CANE_BLOCK.getId(), (byte) 0, plugin.sugarCaneDelayPiston, true);
+			}
 		}
 	}
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		final Block block = event.getBlock();
+		Player player = event.getPlayer();
+		byte data = block.getData();
 		// If that block is a crop (Block ID #59)...
 		if (block.getType() == Material.CROPS && plugin.wheatEnabled) {
-			Player player = event.getPlayer();
 			// If the data for the crop isn't 7 (Isn't fully grown)
 			// And the player doesn't have the bypass permission...
 			// Also check if creative guys should be able to destroy
-			if((byte) block.getData() != 7) {
+			if (data != 7) {
 				if (!player.hasPermission("SuperWheat.wheat.destroying") || plugin.blockCreativeDestroying) {
 					event.setCancelled(true);
-					player.sendMessage(plugin.message);
+					if (plugin.messageEnabled) player.sendMessage(plugin.message);
 				}
 			}
 			// Else, if the data for the block IS 7 (The crop is fully grown) and the player
 			// has the permission node so the crop automatically re-grows after being harvested...
-			else if((byte) block.getData() == 7 && player.hasPermission("SuperWheat.wheat.regrowing")) {
+			else if (data == 7 && player.hasPermission("SuperWheat.wheat.regrowing")) {
 				if (!player.hasPermission("SuperWheat.wheat.noseeds")) {
 					if (player.getInventory().contains(Material.SEEDS)) {
 						removeInventoryItems(player.getInventory(), Material.SEEDS, false, 1);
@@ -216,16 +261,9 @@ public class SuperWheatBlockListener implements Listener {
 					else return;
 				}
 				event.setCancelled(true);
-				block.setTypeId(0);
 				// Set the block to a data value of 0, which is what the crop looks
 				// like right when you just plant it. With a light delay...
-				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					public void run() {
-						// First -> Farmland (soil)
-						block.getRelative(BlockFace.DOWN).setType(Material.SOIL);
-						block.setTypeIdAndData(59, (byte) 0, true);
-					}
-				}, (20 * plugin.wheatDelayHit));
+				blockSchedulder(block, Material.CROPS.getId(), (byte) 0, plugin.wheatDelayHit, true);
 				// Drop wheat from the crop. The amount of wheat is determined from the random number.
 				// Check for creative guys!
 				if (plugin.dropsCreative || player.getGameMode() != GameMode.CREATIVE) dropWheat(block);
@@ -236,19 +274,18 @@ public class SuperWheatBlockListener implements Listener {
 			}
 		}
 		else if (block.getType() == Material.NETHER_WARTS && plugin.netherWartEnabled) {
-			Player player = event.getPlayer();
-			// If the data for the crop isn't 3 (Isn't fully grown)
+			// If the data for the nether wart isn't 3 (Isn't fully grown)
 			// And the player doesn't have the bypass permission...
 			// Also check if creative guys should be able to destroy
-			if ((byte) block.getData() != 3) {
+			if (data != 3) {
 				if (!player.hasPermission("SuperWheat.netherwart.destroying") || plugin.blockCreativeDestroying) {
 					event.setCancelled(true);
-					player.sendMessage(plugin.message);
+					if (plugin.messageEnabled) player.sendMessage(plugin.message);
 				}
 			}
 			// Else, if the data for the block IS 3 (The crop is fully grown) and the player
 			// has the permission node so the crop automatically re-grows after being harvested...
-			else if ((byte) block.getData() == 3 && player.hasPermission("SuperWheat.netherwart.regrowing")) {
+			else if (data == 3 && player.hasPermission("SuperWheat.netherwart.regrowing")) {
 				if (!player.hasPermission("SuperWheat.wheat.noseeds")) {
 					if (player.getInventory().contains(Material.NETHER_STALK)) {
 						removeInventoryItems(player.getInventory(), Material.NETHER_STALK, false, 1);
@@ -256,33 +293,27 @@ public class SuperWheatBlockListener implements Listener {
 					else return;
 				}
 				event.setCancelled(true);
-				block.setTypeId(0);
 				// Set the block to a data value of 0, which is what the wart looks
 				// like right when you just plant it. With a light delay...
-				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					public void run() {
-						block.setTypeIdAndData(Material.NETHER_WARTS.getId(), (byte) 0, true);
-					}
-				}, (20 * plugin.netherWartDelayHit));
-				// Drop wheat from the crop. The amount of wheat is determined from the random number.
+				blockSchedulder(block, Material.NETHER_WARTS.getId(), (byte) 0, plugin.netherWartDelayHit, false);
+				// Drop some nether warts. The amount of wheat is determined from the random number.
 				// Check for creative guys!
 				if (plugin.dropsCreative || player.getGameMode() != GameMode.CREATIVE) dropNetherWart(block);
 			}
 		}
 		else if (block.getType() == Material.COCOA && plugin.cocoaPlantEnabled) {
-			Player player = event.getPlayer();
-			// If the data for the crop isn't at least 8 (Isn't fully grown)
+			// If the data for the cocoa plant isn't at least 8 (Isn't fully grown)
 			// And the player doesn't have the bypass permission...
 			// Also check if creative guys should be able to destroy
-			if ((byte) block.getData() < 8) {
+			if (data < 8) {
 				if (!player.hasPermission("SuperWheat.cocoaplant.destroying") || plugin.blockCreativeDestroying) {
 					event.setCancelled(true);
-					player.sendMessage(plugin.message);
+					if (plugin.messageEnabled) player.sendMessage(plugin.message);
 				}
 			}
 			// Else, if the data for the block IS 8 or higher (The crop is fully grown) and the player
 			// has the permission node so the crop automatically re-grows after being harvested...
-			else if ((byte) block.getData() >= 8 && player.hasPermission("SuperWheat.cocoaplant.regrowing")) {
+			else if (data >= 8 && player.hasPermission("SuperWheat.cocoaplant.regrowing")) {
 				if (!player.hasPermission("SuperWheat.cocoaplant.noseeds")) {
 					ItemStack i = new ItemStack(Material.INK_SACK);
 					i.setDurability((short) 3);
@@ -292,18 +323,88 @@ public class SuperWheatBlockListener implements Listener {
 					else return;
 				}
 				event.setCancelled(true);
-				final byte data = (byte) (block.getData() - 8);
-				block.setTypeId(0);
+				// Minues 8 to keep the relative
+				final byte dataNew = (byte) (block.getData() - 8);
 				// Set the block to a data value of 0, which is what the plant looks
 				// like right when you just place it. With a light delay...
-				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					public void run() {
-						block.setTypeIdAndData(Material.COCOA.getId(), data, true);
-					}
-				}, (20 * plugin.cocoaPlantDelayHit));
-				// Drop wheat from the crop. The amount of wheat is determined from the random number.
+				blockSchedulder(block, Material.COCOA.getId(), dataNew, plugin.cocoaPlantDelayHit, false);
+				// Drop some cocoa. The amount of wheat is determined from the random number.
 				// Check for creative guys!
 				if (plugin.dropsCreative || player.getGameMode() != GameMode.CREATIVE) dropCocoaBeans(block);
+			}
+		}
+		else if (block.getType() == Material.CARROT && plugin.carrotEnabled) {
+			// If the data for the carrot isn't 7 (Isn't fully grown)
+			// And the player doesn't have the bypass permission...
+			// Also check if creative guys should be able to destroy
+			if (data != 7) {
+				if (!player.hasPermission("SuperWheat.carrot.destroying") || plugin.blockCreativeDestroying) {
+					event.setCancelled(true);
+					if (plugin.messageEnabled) player.sendMessage(plugin.message);
+				}
+			}
+			// Else, if the data for the block IS 7 (The crop is fully grown) and the player
+			// has the permission node so the crop automatically re-grows after being harvested...
+			else if (data == 7 && player.hasPermission("SuperWheat.carrot.regrowing")) {
+				if (!player.hasPermission("SuperWheat.carrot.noseeds")) {
+					if (player.getInventory().contains(Material.CARROT_ITEM)) {
+						removeInventoryItems(player.getInventory(), Material.CARROT_ITEM, false, 1);
+					}
+					else return;
+				}
+				event.setCancelled(true);
+				// Set the block to a data value of 0, which is what the crop looks
+				// like right when you just plant it. With a light delay...
+				blockSchedulder(block, Material.CARROT.getId(), (byte) 0, plugin.carrotDelayHit, true);
+				// Drop some carrots. The amount of wheat is determined from the random number.
+				// Check for creative guys!
+				if (plugin.dropsCreative || player.getGameMode() != GameMode.CREATIVE) dropCarrot(block);
+			}
+		}
+		else if (block.getType() == Material.POTATO && plugin.potatoEnabled) {
+			// If the data for the potato isn't 7 (Isn't fully grown)
+			// And the player doesn't have the bypass permission...
+			// Also check if creative guys should be able to destroy
+			if (data != 7) {
+				if (!player.hasPermission("SuperWheat.potato.destroying") || plugin.blockCreativeDestroying) {
+					event.setCancelled(true);
+					if (plugin.messageEnabled) player.sendMessage(plugin.message);
+				}
+			}
+			// Else, if the data for the block IS 7 (The crop is fully grown) and the player
+			// has the permission node so the crop automatically re-grows after being harvested...
+			else if (data == 7 && player.hasPermission("SuperWheat.potato.regrowing")) {
+				if (!player.hasPermission("SuperWheat.potato.noseeds")) {
+					if (player.getInventory().contains(Material.POTATO_ITEM)) {
+						removeInventoryItems(player.getInventory(), Material.POTATO_ITEM, false, 1);
+					}
+					else return;
+				}
+				event.setCancelled(true);
+				// Set the block to a data value of 0, which is what the crop looks
+				// like right when you just plant it. With a light delay...
+				blockSchedulder(block, Material.POTATO.getId(), (byte) 0, plugin.potatoDelayHit, true);
+				// Drop some potatoes. The amount of wheat is determined from the random number.
+				// Check for creative guys!
+				if (plugin.dropsCreative || player.getGameMode() != GameMode.CREATIVE) dropPotato(block);
+			}
+		}
+		else if (block.getType() == Material.SUGAR_CANE_BLOCK && plugin.sugarCaneEnabled) {
+			// If the player has the permission node so the crop automatically re-grows after being harvested...
+			if (player.hasPermission("SuperWheat.sugarcane.regrowing")) {
+				if (!player.hasPermission("SuperWheat.sugarcane.noseeds")) {
+					if (player.getInventory().contains(Material.SUGAR_CANE)) {
+						removeInventoryItems(player.getInventory(), Material.SUGAR_CANE, false, 1);
+					}
+					else return;
+				}
+				event.setCancelled(true);
+				// Set the block to a data value of 0, which is what the crop looks
+				// like right when you just plant it. With a light delay...
+				blockSchedulder(block, Material.SUGAR_CANE_BLOCK.getId(), (byte) 0, plugin.sugarCaneDelayHit, false);
+				// Drop some potatoes. The amount of wheat is determined from the random number.
+				// Check for creative guys!
+				if (plugin.dropsCreative || player.getGameMode() != GameMode.CREATIVE) dropSugarCane(block);
 			}
 		}
 	}
@@ -326,6 +427,21 @@ public class SuperWheatBlockListener implements Listener {
 	// Drops cocoa beans
 	private void dropCocoaBeans(Block block) {
 		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.INK_SACK, 3, (short) 3));
+	}
+	
+	// Drops carrots
+	private void dropCarrot(Block block) {
+		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.CARROT_ITEM, (int) (Math.random() * 4) + 1));
+	}
+	
+	// Drops potatoes
+	private void dropPotato(Block block) {
+		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.POTATO_ITEM, (int) (Math.random() * 4) + 1));
+	}
+	
+	// Drops sugar canes
+	private void dropSugarCane(Block block) {
+		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.SUGAR_CANE, 1));
 	}
 
 	// Removes item
@@ -353,5 +469,18 @@ public class SuperWheatBlockListener implements Listener {
 			if (is != null && is.getType() == inkSack && is.getDurability() == s) return true;
 		}
 		return false;
+	}
+	
+	private void blockSchedulder(final Block block, final int newID, final byte data, int delay, final boolean farmland) {
+		// Set the block to a data value of 0, which is what the crop looks
+		// like right when you just plant it. With a light delay...
+		block.setTypeId(0);
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				// First -> Farmland (soil)
+				if (farmland) block.getRelative(BlockFace.DOWN).setType(Material.SOIL);
+				block.setTypeIdAndData(newID, data, true);
+			}
+		}, (20 * delay));
 	}
 }

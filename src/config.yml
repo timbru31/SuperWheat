@@ -2,6 +2,7 @@
 # forum thread: http://bit.ly/superwheatthread
 # or the bukkit dev page: http://bit.ly/superwheatpage
 message: '&6[SuperWheat] That plant is not fully grown yet!'
+message-enabled: true
 creative:
   dropsCreative: false
   blockCreativeDestroying: false
@@ -59,3 +60,52 @@ cocoaPlant:
     prevent:
       premature: true
       mature: false
+carrot:
+  enabled: true
+  trampling: true
+  delayHit: 3
+  water:
+    delay: 5
+    drops:
+      carrot: true
+    prevent:
+      premature: true
+      mature: false
+  piston:
+    delay: 5
+    drops:
+      carrot: true
+    prevent:
+      premature: true
+      mature: false
+potato:
+  enabled: true
+  trampling: true
+  delayHit: 3
+  water:
+    delay: 5
+    drops:
+      potato: true
+    prevent:
+      premature: true
+      mature: false
+  piston:
+    delay: 5
+    drops:
+      potato: true
+    prevent:
+      premature: true
+      mature: false
+sugarCane:
+  enabled: false
+  delayHit: 3
+  water:
+    delay: 5
+    drops:
+      sugarCane: true
+    prevent: false
+  piston:
+    delay: 5
+    drops:
+      sugarCane: true
+    prevent: false
