@@ -478,7 +478,12 @@ public class SuperWheatBlockListener implements Listener {
 		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
 				// First -> Farmland (soil)
-				if (farmland) block.getRelative(BlockFace.DOWN).setType(Material.SOIL);
+				if (farmland) {
+					// Use old farmland value of hydration
+					byte dataFarmaland = block.getRelative(BlockFace.DOWN).getData();
+					block.getRelative(BlockFace.DOWN).setType(Material.SOIL);
+					block.getRelative(BlockFace.DOWN).setData(dataFarmaland);
+				}
 				block.setTypeIdAndData(newID, data, true);
 			}
 		}, (20 * delay));

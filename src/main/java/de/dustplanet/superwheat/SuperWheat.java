@@ -71,7 +71,7 @@ public class SuperWheat extends JavaPlugin {
 			configFile.getParentFile().mkdirs();
 			copy(getResource("config.yml"), configFile);
 		}
-		config = this.getConfig();
+		config = getConfig();
 		loadConfig();
 	}
 
