@@ -5,6 +5,11 @@ author: xGhOsTkiLLeRx
 authors: [thescreem]
 website: http://bit.ly/superwheatpage
 website: http://bit.ly/superwheatthread
+commands:
+    superwheat:
+        usage: /superwheat reload - Reload the plugin
+        aliases: [superw, sw]
+        description: Reloads the SuperWheat configuration file
 permissions:
     SuperWheat.*:
         children:
@@ -14,6 +19,7 @@ permissions:
             SuperWheat.carrot.*: true
             SuperWheat.potato.*: true
             SuperWheat.sugarcane.*: true
+            SuperWheat.reload: true
     SuperWheat.wheat.*:
         children:
             SuperWheat.wheat.destroying: true
@@ -98,3 +104,6 @@ permissions:
     SuperWheat.sugarcane.noseeds:
         default: op
         description: Doesn't require the sugar canes in the inv
+    SuperWheat.reload:
+         default: op
+         description: Reloads the config

@@ -1,7 +1,9 @@
 package de.dustplanet.superwheat;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -78,10 +81,14 @@ public class SuperWheat extends JavaPlugin {
 			copy(getResource("config.yml"), configFile);
 		}
 		config = getConfig();
+		setupDefaultConfig();
 		loadConfig();
+		
+		// Command
+		getCommand("superwheat").setExecutor(new SuperWheatCommand(this));
 	}
 
-	private void loadConfig() {
+	private void setupDefaultConfig() {
 		config.options().header("For help please either refer to the\nforum thread: http://bit.ly/superwheatthread\nor the bukkit dev page: http://bit.ly/superwheatpage");
 		// Localization
 		config.addDefault("message-enabled", true);
@@ -167,6 +174,9 @@ public class SuperWheat extends JavaPlugin {
 		config.addDefault("enabled_worlds", worldNames);
 		config.options().copyDefaults(true);
 		saveConfig();
+	}
+	
+	private void loadConfig() {
 		// Localization
 		message = ChatColor.translateAlternateColorCodes('\u0026', config.getString("message"));
 		messageEnabled = config.getBoolean("message-enabled");
@@ -244,6 +254,23 @@ public class SuperWheat extends JavaPlugin {
 		sugarCanePreventPiston = config.getBoolean("sugarCane.piston.prevent");
 		// Enabled worlds
 		enabledWorlds = config.getStringList("enabled_worlds");
+	}
+	
+	public void loadConfigAgain() {
+		try {
+			config.load(configFile);
+			saveConfig();
+			loadConfig();
+		}
+		catch (InvalidConfigurationException e) {
+			getLogger().warning("Failed to load the config again! Please report this! (InvalidConfiguration)");
+		}
+		catch (FileNotFoundException e) {
+			getLogger().warning("Failed to load the config again! Please report this! (FileNotFound)");
+		}
+		catch (IOException e) {
+			getLogger().warning("Failed to load the config again! Please report this! (I/O)");
+		}
 	}
 	
 	// If no config is found, copy the default one!
