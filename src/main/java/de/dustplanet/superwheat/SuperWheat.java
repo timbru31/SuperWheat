@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,6 +60,8 @@ public class SuperWheat extends JavaPlugin {
 	public boolean messageEnabled = true;
 	// Creative mode
 	public boolean dropsCreative, blockCreativeDestroying;
+	// Enabled worlds
+	public List<String> enabledWorlds = new ArrayList<String>();
 	public FileConfiguration config;
 	private File configFile;
 
@@ -152,6 +158,13 @@ public class SuperWheat extends JavaPlugin {
 		config.addDefault("sugarCane.piston.delay", 5);
 		config.addDefault("sugarCane.piston.drops.sugarCane", true);
 		config.addDefault("sugarCane.piston.prevent", false);
+		// Enabled worlds
+		List<World> worlds = getServer().getWorlds();
+		List<String> worldNames = new ArrayList<String>();
+		for (World w : worlds) {
+			worldNames.add(w.getName());
+		}
+		config.addDefault("enabled_worlds", worldNames);
 		config.options().copyDefaults(true);
 		saveConfig();
 		// Localization
@@ -229,6 +242,8 @@ public class SuperWheat extends JavaPlugin {
 		sugarCaneDelayPiston = config.getInt("sugarCane.piston.delay");
 		sugarCanePistonDropSugarCane = config.getBoolean("sugarCane.piston.drops.sugarCane");
 		sugarCanePreventPiston = config.getBoolean("sugarCane.piston.prevent");
+		// Enabled worlds
+		enabledWorlds = config.getStringList("enabled_worlds");
 	}
 	
 	// If no config is found, copy the default one!

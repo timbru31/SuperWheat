@@ -38,7 +38,9 @@ public class SuperWheatBlockListener implements Listener {
 		// Physical means jump on it
 		if (event.getAction() == Action.PHYSICAL) {
 			Block block = event.getClickedBlock();
+			// Is the world on the list?
 			if (block == null) return;
+			if (!plugin.enabledWorlds.contains(block.getWorld().getName())) return;
 			// If the block is farmland (soil) & matches any of the no tramplign blocks
 			if (block.getType() == Material.SOIL && ((!plugin.wheatTrampling && block.getRelative(BlockFace.UP).getType() == Material.CROPS)
 					|| (!plugin.carrotTrampling && block.getRelative(BlockFace.UP).getType() == Material.CARROT)
@@ -53,9 +55,11 @@ public class SuperWheatBlockListener implements Listener {
 
 	@EventHandler
 	public void onBlockFromTo(BlockFromToEvent event) {
-		// If wart flows "over" it
+		// If water flows "over" it
 		if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.STATIONARY_WATER) {
 			final Block block = event.getToBlock();
+			// Is the world on the list?
+			if (!plugin.enabledWorlds.contains(block.getWorld().getName())) return;
 			byte data = block.getData();
 			// If the block is a wheat
 			if (event.getToBlock().getType() == Material.CROPS && plugin.wheatEnabled) {
@@ -153,6 +157,8 @@ public class SuperWheatBlockListener implements Listener {
 		byte data = block.getData();
 		// If the block is a wheat block
 		if (block.getType() == Material.CROPS && plugin.wheatEnabled) {
+			// Is the world on the list?
+			if (!plugin.enabledWorlds.contains(block.getWorld().getName())) return;
 			// Mature
 			if (data == 7) {
 				// Should we cancel this?
@@ -240,6 +246,8 @@ public class SuperWheatBlockListener implements Listener {
 		final Block block = event.getBlock();
 		Player player = event.getPlayer();
 		byte data = block.getData();
+		// Is the world on the list?
+		if (!plugin.enabledWorlds.contains(block.getWorld().getName())) return;
 		// If that block is a crop (Block ID #59)...
 		if (block.getType() == Material.CROPS && plugin.wheatEnabled) {
 			// If the data for the crop isn't 7 (Isn't fully grown)
