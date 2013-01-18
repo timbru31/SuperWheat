@@ -123,6 +123,11 @@ sugarCane:
 Permissions (if no permissions system is detected, only OPs are able to use the permissions!)
 Only bukkit's permissions system is supported!
 
+Command: /superwheat reload
+Aliases: sw, superw
+Description: Reloads the configuration on the fly
+Node: SuperWheat.reload
+
 SuperWheat.*
 Description: Includes all permissions
 
