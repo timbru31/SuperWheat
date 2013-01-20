@@ -284,9 +284,10 @@ public class SuperWheat extends JavaPlugin {
 			}
 			out.close();
 			in.close();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			getLogger().warning("Failed to copy the default config! (FileNotFound)");
+		} catch (IOException e) {
+			getLogger().warning("Failed to copy the default config! (I/O)");
 		}
 	}
 }

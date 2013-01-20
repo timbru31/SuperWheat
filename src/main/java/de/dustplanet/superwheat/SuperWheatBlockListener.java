@@ -1,5 +1,7 @@
 package de.dustplanet.superwheat;
 
+import java.util.Random;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,8 +29,9 @@ import org.bukkit.inventory.ItemStack;
  */
 
 public class SuperWheatBlockListener implements Listener {
-
 	private SuperWheat plugin;
+	private Random random = new Random();
+	
 	public SuperWheatBlockListener(SuperWheat instance){
 		plugin = instance;
 	}
@@ -419,17 +422,17 @@ public class SuperWheatBlockListener implements Listener {
 
 	// Drops wheat
 	private void dropWheat(Block block) {
-		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.WHEAT, (int) (Math.random() * 3) + 1));
+		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.WHEAT, random.nextInt(3) + 1));
 	}
 
 	// Drops seeds
 	private void dropSeeds(Block block) {
-		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.SEEDS, (int) (Math.random() * 4)));
+		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.SEEDS, random.nextInt(4)));
 	}
 
 	// Drops netherWart
 	private void dropNetherWart(Block block) {
-		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.NETHER_STALK, (int) (Math.random() * 4) + 2));
+		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.NETHER_STALK, random.nextInt(4) + 2));
 	}
 
 	// Drops cocoa beans
@@ -439,12 +442,12 @@ public class SuperWheatBlockListener implements Listener {
 	
 	// Drops carrots
 	private void dropCarrot(Block block) {
-		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.CARROT_ITEM, (int) (Math.random() * 4) + 1));
+		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.CARROT_ITEM, random.nextInt(4) + 1));
 	}
 	
 	// Drops potatoes
 	private void dropPotato(Block block) {
-		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.POTATO_ITEM, (int) (Math.random() * 4) + 1));
+		block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.POTATO_ITEM, random.nextInt(4) + 1));
 	}
 	
 	// Drops sugar canes
@@ -463,7 +466,7 @@ public class SuperWheatBlockListener implements Listener {
 						break;
 					} else {
 						inv.remove(is);
-						amount = -newamount;
+						amount -= newamount;
 						if (amount == 0) break;
 					}
 				}
@@ -494,6 +497,6 @@ public class SuperWheatBlockListener implements Listener {
 				}
 				block.setTypeIdAndData(newID, data, true);
 			}
-		}, (20 * delay));
+		}, (20L * delay));
 	}
 }
