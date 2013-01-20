@@ -1,6 +1,6 @@
 name: SuperWheat
 main: de.dustplanet.superwheat.SuperWheat
-version: ${project.version}
+version: ${project.version}-b${BUILD_NUMBER}
 author: xGhOsTkiLLeRx
 authors: [thescreem]
 website: http://bit.ly/superwheatpage
