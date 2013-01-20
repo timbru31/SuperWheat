@@ -218,7 +218,7 @@ public class SuperWheatBlockListener implements Listener {
 				}
 			}
 			// MUST be a premature block, cancel it or not?
-			else if (plugin.wheatPreventPiston) event.setCancelled(true);
+			else if (plugin.carrotPreventPiston) event.setCancelled(true);
 		}
 		else if (block.getType() == Material.POTATO && plugin.potatoEnabled) {
 			// Mature
@@ -232,7 +232,7 @@ public class SuperWheatBlockListener implements Listener {
 				}
 			}
 			// MUST be a premature block, cancel it or not?
-			else if (plugin.wheatPreventPiston) event.setCancelled(true);
+			else if (plugin.potatoPreventPiston) event.setCancelled(true);
 		}
 		else if (block.getType() == Material.SUGAR_CANE_BLOCK && plugin.sugarCaneEnabled) {
 			if (plugin.sugarCanePreventPiston) event.setCancelled(true);
