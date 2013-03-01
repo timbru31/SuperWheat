@@ -7,12 +7,12 @@
 	<name>SuperWheat</name>
 	<description>Wheat re-grows automatically</description>
 	<url>http://dev.bukkit.org/server-mods/SuperWheat/</url>
-	
+
 	<!-- Encode in UTF-8 -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<!-- Repositories -->
 	<repositories>
 		<repository>
@@ -20,7 +20,7 @@
 			<url>http://repo.bukkit.org/content/repositories/snapshots</url>
 		</repository>
 	</repositories>
-	
+
 	<!-- Dependencies -->
 	<dependencies>
 		<dependency>
@@ -31,9 +31,9 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
-	<!-- Compile for 1.6 and clean before -->
+		<!-- Compile for 1.6 and clean before -->
 		<defaultGoal>clean compile package</defaultGoal>
 		<finalName>SuperWheat</finalName>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
@@ -51,7 +51,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		
+
 		<!-- Include the .yml files -->
 		<resources>
 			<resource>
@@ -62,11 +62,12 @@
 					<include>plugin.yml</include>
 					<include>config.yml</include>
 					<include>localization.yml</include>
+					<include>README.txt</include>
 				</includes>
 			</resource>
 		</resources>
 	</build>
-	
+
 	<!-- GitHub information -->
 	<scm>
 		<url>https://github.com/xGhOsTkiLLeRx/SuperWheat</url>
@@ -74,7 +75,7 @@
 		<tag>master</tag>
 		<developerConnection>scm:git:git@github.com:xGhOsTkiLLeRx/SuperWheat.git</developerConnection>
 	</scm>
-	
+
 	<!-- Jenkins information -->
 	<ciManagement>
 		<url>http://ci.dustplanet.de/job/SuperWheat</url>

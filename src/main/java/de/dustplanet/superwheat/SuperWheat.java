@@ -76,9 +76,15 @@ public class SuperWheat extends JavaPlugin {
 		
 		// Config
 		configFile = new File(getDataFolder(), "config.yml");
-		if(!configFile.exists()){
-			if (configFile.getParentFile().mkdirs()) copy(getResource("config.yml"), configFile);
+		if (!configFile.exists()){
+			if (getDataFolder().mkdirs()) {
+				copy(getResource("config.yml"), configFile);
+			}
+			else {
+				getLogger().severe("Unable to create the data folder, fallback to default values!");
+			}
 		}
+		
 		config = getConfig();
 		setupDefaultConfig();
 		loadConfig();
@@ -272,21 +278,36 @@ public class SuperWheat extends JavaPlugin {
 		}
 	}
 	
-	// If no config is found, copy the default one!
+	// If no config is found, copy the default one(s)!
 	private void copy(InputStream in, File file) {
+		OutputStream out = null;
 		try {
-			OutputStream out = new FileOutputStream(file);
+			out = new FileOutputStream(file);
 			byte[] buf = new byte[1024];
 			int len;
-			while ((len=in.read(buf)) > 0) {
+			while ((len = in.read(buf)) > 0) {
 				out.write(buf, 0, len);
 			}
-			out.close();
-			in.close();
-		} catch (FileNotFoundException e) {
-			getLogger().warning("Failed to copy the default config! (FileNotFound)");
 		} catch (IOException e) {
 			getLogger().warning("Failed to copy the default config! (I/O)");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (out != null) {
+					out.close();
+				}
+			} catch (IOException e) {
+				getLogger().warning("Failed to close the streams! (I/O -> Output)");
+				e.printStackTrace();
+			}
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException e) {
+				getLogger().warning("Failed to close the streams! (I/O -> Input)");
+				e.printStackTrace();
+			}
 		}
 	}
 }
