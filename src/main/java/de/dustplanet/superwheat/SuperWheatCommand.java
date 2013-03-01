@@ -5,6 +5,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+/**
+ * SuperWheat for CraftBukkit/Bukkit 
+ * Handles the command 
+ * Refer to the forum thread: 
+ * http://bit.ly/superwheatthread
+ * 
+ * Refer to the dev.bukkit.org page: 
+ * http://bit.ly/superwheatpage
+ * 
+ * @author xGhOsTkiLLeRx
+ * thanks to thescreem for the original SuperWheat plugin!
+ */
+
 public class SuperWheatCommand implements CommandExecutor {
     private SuperWheat plugin;
 

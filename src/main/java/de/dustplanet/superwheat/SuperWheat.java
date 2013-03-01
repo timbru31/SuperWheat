@@ -17,12 +17,16 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * SuperWheat for CraftBukkit/Bukkit Handles some general stuff! Refer to the
- * forum thread: http://bit.ly/superwheatthread Refer to the dev.bukkit.org
- * page: http://bit.ly/superwheatpage
+ * SuperWheat for CraftBukkit/Bukkit 
+ * Handles some general stuff! 
+ * Refer to the forum thread: 
+ * http://bit.ly/superwheatthread
+ * 
+ * Refer to the dev.bukkit.org page: 
+ * http://bit.ly/superwheatpage
  * 
  * @author xGhOsTkiLLeRx
- * @thanks to thescreem for the original SuperWheat plugin!
+ * thanks to thescreem for the original SuperWheat plugin!
  */
 
 public class SuperWheat extends JavaPlugin {

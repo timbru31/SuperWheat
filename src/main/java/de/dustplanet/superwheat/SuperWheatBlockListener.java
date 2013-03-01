@@ -22,7 +22,9 @@ import org.bukkit.inventory.ItemStack;
  * Handles block activities!
  * Refer to the forum thread:
  * http://bit.ly/superwheatthread
- * Refer to the dev.bukkit.org page: http://bit.ly/superwheatpage
+ * 
+ * Refer to the dev.bukkit.org page: 
+ * http://bit.ly/superwheatpage
  * 
  * @author  xGhOsTkiLLeRx
  * thanks  to thescreem for the original SuperWheat plugin!
