@@ -30,8 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 
 public class SuperWheat extends JavaPlugin {
-    private final SuperWheatBlockListener blockListener = new SuperWheatBlockListener(
-	    this);
+    private final SuperWheatBlockListener blockListener = new SuperWheatBlockListener(this);
     // Wheat
     public boolean wheatTrampling = true, wheatEnabled = true, wheatPreventWater = true, wheatPreventWaterGrown, wheatWaterDropSeeds, wheatWaterDropWheat = true;
     public boolean wheatPreventPiston = true, wheatPreventPistonGrown, wheatPistonDropWheat = true, wheatPistonDropSeeds;

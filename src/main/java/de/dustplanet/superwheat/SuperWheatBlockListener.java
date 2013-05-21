@@ -26,8 +26,8 @@ import org.bukkit.inventory.ItemStack;
  * Refer to the dev.bukkit.org page: 
  * http://bit.ly/superwheatpage
  * 
- * @author  xGhOsTkiLLeRx
- * thanks  to thescreem for the original SuperWheat plugin!
+ * @author xGhOsTkiLLeRx
+ * thanks to thescreem for the original SuperWheat plugin!
  */
 
 public class SuperWheatBlockListener implements Listener {
@@ -574,17 +574,23 @@ public class SuperWheatBlockListener implements Listener {
 
     // Removes item
     private void removeInventoryItems(Inventory inv, Material type, boolean cocoa, int amount) {
+	// Iterate through inventory
 	for (ItemStack is : inv.getContents()) {
 	    if (is != null && is.getType() == type) {
+		// Either no cocoa or cocoa and right durability
 		if (!cocoa || (cocoa && is.getDurability() == (short) 3)) {
 		    int newamount = is.getAmount() - amount;
+		    // More than 0, fine just set the new amount
 		    if (newamount > 0) {
 			is.setAmount(newamount);
+			// Stop then
 			break;
 		    } else {
+			// Remove the stack and reduce the needed amount, go on then
 			inv.remove(is);
 			amount -= newamount;
 			if (amount == 0) {
+			    // Stop when we reached 0
 			    break;
 			}
 		    }
@@ -596,6 +602,7 @@ public class SuperWheatBlockListener implements Listener {
     // Checks with the durability, too
     private boolean containsWithDurability(Inventory inventory, Material inkSack, short s) {
 	for (ItemStack is : inventory) {
+	    // Check the short value of the inkSack for cocoa beans
 	    if (is != null && is.getType() == inkSack && is.getDurability() == s) {
 		return true;
 	    }

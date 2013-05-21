@@ -28,13 +28,15 @@ public class SuperWheatCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
 	if (args.length == 0) {
 	    sender.sendMessage(ChatColor.YELLOW + "Usage: /superwheat reload (or /sw reload)");
-	} else if (args[0].equalsIgnoreCase("reload")) {
+	} else if (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) {
+	    // Make sure the sender has the permission
 	    if (sender.hasPermission("SuperWheat.reload")) {
 		plugin.loadConfigAgain();
 		sender.sendMessage(ChatColor.GREEN + "SuperWheat successfully reloaded!");
 	    } else {
 		sender.sendMessage(ChatColor.RED + "You don't have the permission to reload SuperWheat!");
 	    }
+	    // So far we only support reload
 	} else {
 	    sender.sendMessage(ChatColor.RED + "This argument is unkown!");
 	}
