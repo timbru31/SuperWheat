@@ -1,91 +1,89 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.dustplanet</groupId>
-	<artifactId>SuperWheat</artifactId>
-	<version>0.9.1-SNAPSHOT</version>
-	<name>SuperWheat</name>
-	<description>Wheat re-grows automatically</description>
-	<url>http://dev.bukkit.org/server-mods/SuperWheat/</url>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>de.dustplanet</groupId>
+  <artifactId>SuperWheat</artifactId>
+  <version>0.9.1-SNAPSHOT</version>
+  <name>SuperWheat</name>
+  <description>Wheat re-grows automatically</description>
+  <url>http://dev.bukkit.org/bukkit-plugins/SuperWheat/</url>
 
-	<!-- Encode in UTF-8 -->
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+  <!-- Encode in UTF-8 -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-	<!-- Repositories -->
-	<repositories>
-		<repository>
-			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org/content/repositories/snapshots</url>
-		</repository>
-	</repositories>
+  <!-- Repositories -->
+  <repositories>
+    <repository>
+      <id>bukkit-repo</id>
+      <url>http://repo.bukkit.org/content/repositories/snapshots</url>
+    </repository>
+  </repositories>
 
-	<!-- Dependencies -->
-	<dependencies>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.6.1-R0.1-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-	</dependencies>
+  <!-- Dependencies -->
+  <dependencies>
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>1.7.10-R0.1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
 
-	<build>
-		<!-- Compile for 1.6 and clean before -->
-		<defaultGoal>clean compile package</defaultGoal>
-		<finalName>SuperWheat</finalName>
-		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<verbose>true</verbose>
-					<fork>true</fork>
-					<compilerVersion>1.6</compilerVersion>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
+ <build>
+    <!-- Compile for 1.7 and clean before -->
+    <defaultGoal>clean compile package</defaultGoal>
+    <finalName>SuperWheat</finalName>
+    <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <verbose>true</verbose>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    </plugins>
 
-		<!-- Include the .yml files -->
-		<resources>
-			<resource>
-				<targetPath>.</targetPath>
-				<filtering>true</filtering>
-				<directory>${basedir}/src/main/resources</directory>
-				<includes>
-					<include>plugin.yml</include>
-					<include>config.yml</include>
-					<include>localization.yml</include>
-				</includes>
-			</resource>
-			<resource>
-				<targetPath>.</targetPath>
-				<filtering>true</filtering>
-				<directory>${basedir}</directory>
-				<includes>
-					<include>README.txt</include>
-				</includes>
-			</resource>
-		</resources>
-	</build>
+    <!-- Include the .yml files -->
+    <resources>
+      <resource>
+        <targetPath>.</targetPath>
+        <filtering>true</filtering>
+        <directory>${basedir}/src/main/resources</directory>
+        <includes>
+          <include>plugin.yml</include>
+          <include>config.yml</include>
+          <include>localization.yml</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>.</targetPath>
+        <filtering>true</filtering>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>README.txt</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
 
-	<!-- GitHub information -->
-	<scm>
-		<url>https://github.com/xGhOsTkiLLeRx/SuperWheat</url>
-		<connection>scm:git:git://github.com/xGhOsTkiLLeRx/SuperWheat.git</connection>
-		<tag>master</tag>
-		<developerConnection>scm:git:git@github.com:xGhOsTkiLLeRx/SuperWheat.git</developerConnection>
-	</scm>
+  <!-- GitHub information -->
+  <scm>
+    <url>https://github.com/xGhOsTkiLLeRx/SuperWheat</url>
+    <connection>scm:git:git://github.com/xGhOsTkiLLeRx/SuperWheat.git</connection>
+    <tag>master</tag>
+    <developerConnection>scm:git:git@github.com:xGhOsTkiLLeRx/SuperWheat.git</developerConnection>
+  </scm>
 
-	<!-- Jenkins information -->
-	<ciManagement>
-		<url>http://ci.dustplanet.de/job/SuperWheat</url>
-		<system>jenkins</system>
-	</ciManagement>
+  <!-- Jenkins information -->
+  <ciManagement>
+    <url>http://ci.dustplanet.de/job/SuperWheat</url>
+    <system>jenkins</system>
+  </ciManagement>
 </project>

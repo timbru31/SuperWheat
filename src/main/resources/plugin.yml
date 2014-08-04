@@ -3,8 +3,7 @@ main: de.dustplanet.superwheat.SuperWheat
 version: ${project.version}-b${BUILD_NUMBER}
 author: xGhOsTkiLLeRx
 authors: [thescreem]
-website: http://bit.ly/superwheatpage
-website: http://bit.ly/superwheatthread
+website: http://dev.bukkit.org/bukkit-plugins/superwheat/
 commands:
     superwheat:
         usage: /superwheat reload - Reload the plugin
