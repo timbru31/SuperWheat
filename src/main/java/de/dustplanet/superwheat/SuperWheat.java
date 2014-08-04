@@ -1,7 +1,6 @@
 package de.dustplanet.superwheat;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +27,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 
 public class SuperWheat extends JavaPlugin {
-    private final SuperWheatBlockListener blockListener = new SuperWheatBlockListener(this);
     // Wheat
     public boolean wheatTrampling = true, wheatEnabled = true, wheatPreventWater = true, wheatPreventWaterGrown, wheatWaterDropSeeds, wheatWaterDropWheat = true;
     public boolean wheatPreventPiston = true, wheatPreventPistonGrown, wheatPistonDropWheat = true, wheatPistonDropSeeds;
@@ -65,7 +63,7 @@ public class SuperWheat extends JavaPlugin {
     // Creative mode
     public boolean dropsCreative, blockCreativeDestroying;
     // Enabled worlds
-    public List<String> enabledWorlds = new ArrayList<String>();
+    public List<String> enabledWorlds = new ArrayList<>();
     public FileConfiguration config;
     private File configFile;
 
@@ -73,16 +71,15 @@ public class SuperWheat extends JavaPlugin {
     public void onEnable() {
         // Events
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(blockListener, this);
+        pm.registerEvents(new SuperWheatBlockListener(this), this);
 
         // Config
         configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             if (getDataFolder().mkdirs()) {
-                copy(getResource("config.yml"), configFile);
+                copy("config.yml", configFile);
             } else {
-                getLogger()
-                .severe("Unable to create the data folder, fallback to default values!");
+                getLogger().severe("Unable to create the data folder, fallback to default values!");
             }
         }
 
@@ -173,7 +170,7 @@ public class SuperWheat extends JavaPlugin {
         config.addDefault("sugarCane.piston.prevent", false);
         // Enabled worlds
         List<World> worlds = getServer().getWorlds();
-        List<String> worldNames = new ArrayList<String>();
+        List<String> worldNames = new ArrayList<>();
         for (World w : worlds) {
             worldNames.add(w.getName());
         }
@@ -231,8 +228,7 @@ public class SuperWheat extends JavaPlugin {
         carrotDelayHit = config.getInt("carrot.delayHit");
         carrotDelayWater = config.getInt("carrot.water.delay");
         carrotWaterDropCarrot = config.getBoolean("carrot.water.drops.carrot");
-        carrotPreventWater = config
-                .getBoolean("carrot.water.prevent.premature");
+        carrotPreventWater = config.getBoolean("carrot.water.prevent.premature");
         carrotPreventWaterGrown = config.getBoolean("carrot.water.prevent.mature");
         carrotDelayPiston = config.getInt("carrot.piston.delay");
         carrotPistonDropCarrot = config.getBoolean("carrot.piston.drops.carrot");
@@ -268,47 +264,24 @@ public class SuperWheat extends JavaPlugin {
             config.load(configFile);
             saveConfig();
             loadConfig();
-        } catch (InvalidConfigurationException e) {
-            getLogger().warning("Failed to load the config again! Please report this! (InvalidConfiguration)");
-        } catch (FileNotFoundException e) {
-            getLogger().warning("Failed to load the config again! Please report this! (FileNotFound)");
-        } catch (IOException e) {
-            getLogger().warning("Failed to load the config again! Please report this! (I/O)");
+        } catch (IOException | InvalidConfigurationException e) {
+            getLogger().warning("Failed to load the config again! Please report this!");
+            e.printStackTrace();
         }
     }
 
     // If no config is found, copy the default one(s)!
-    private void copy(InputStream in, File file) {
-        OutputStream out = null;
-        try {
-            out = new FileOutputStream(file);
+    private void copy(String yml, File file) {
+        try (OutputStream out = new FileOutputStream(file);
+                InputStream in = getResource(yml)) {
             byte[] buf = new byte[1024];
             int len;
             while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
         } catch (IOException e) {
-            getLogger().warning("Failed to copy the default config! (I/O)");
+            getLogger().warning("Failed to copy the default config!");
             e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                getLogger().warning(
-                        "Failed to close the streams! (I/O -> Output)");
-                e.printStackTrace();
-            }
-            try {
-                if (in != null) {
-                    in.close();
-                }
-            } catch (IOException e) {
-                getLogger().warning(
-                        "Failed to close the streams! (I/O -> Input)");
-                e.printStackTrace();
-            }
         }
     }
 }
