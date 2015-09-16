@@ -6,7 +6,7 @@
   <version>0.9.1-SNAPSHOT</version>
   <name>SuperWheat</name>
   <description>Wheat re-grows automatically</description>
-  <url>http://dev.bukkit.org/bukkit-plugins/SuperWheat/</url>
+  <url>http://dev.bukkit.org/bukkit-plugins/superwheat/</url>
 
   <!-- Encode in UTF-8 -->
   <properties>
@@ -16,8 +16,8 @@
   <!-- Repositories -->
   <repositories>
     <repository>
-      <id>bukkit-repo</id>
-      <url>http://repo.bukkit.org/content/repositories/snapshots</url>
+      <id>spigotmc-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
     </repository>
   </repositories>
 
@@ -26,9 +26,7 @@
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.7.10-R0.1-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
+      <version>1.8.8-R0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
@@ -41,7 +39,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <version>3.3</version>
         <configuration>
           <verbose>true</verbose>
           <source>1.7</source>
@@ -75,10 +73,10 @@
 
   <!-- GitHub information -->
   <scm>
-    <url>https://github.com/xGhOsTkiLLeRx/SuperWheat</url>
-    <connection>scm:git:git://github.com/xGhOsTkiLLeRx/SuperWheat.git</connection>
+    <url>https://github.com/timbru31/SuperWheat</url>
+    <connection>scm:git:git://github.com/timbru31/SuperWheat.git</connection>
     <tag>master</tag>
-    <developerConnection>scm:git:git@github.com:xGhOsTkiLLeRx/SuperWheat.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:timbru31/SuperWheat.git</developerConnection>
   </scm>
 
   <!-- Jenkins information -->

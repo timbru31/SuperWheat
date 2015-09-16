@@ -22,7 +22,7 @@ import org.bukkit.inventory.ItemStack;
  * Handles block activities!
  *
  * http://dev.bukkit.org/bukkit-plugins/superwheat/
- * 
+ *
  * @author xGhOsTkiLLeRx
  * thanks to thescreem for the original SuperWheat plugin!
  */
@@ -45,9 +45,9 @@ public class SuperWheatBlockListener implements Listener {
                 return;
             }
             // If the block is farmland (soil) & matches any of the no trampling blocks
-            if (block.getType() == Material.SOIL && ((!plugin.wheatTrampling && block.getRelative(BlockFace.UP).getType() == Material.CROPS)
-                    || (!plugin.carrotTrampling && block.getRelative(BlockFace.UP).getType() == Material.CARROT)
-                    || (!plugin.potatoTrampling && block.getRelative(BlockFace.UP).getType() == Material.POTATO))) {
+            if (block.getType() == Material.SOIL && (!plugin.wheatTrampling && block.getRelative(BlockFace.UP).getType() == Material.CROPS
+                    || !plugin.carrotTrampling && block.getRelative(BlockFace.UP).getType() == Material.CARROT
+                    || !plugin.potatoTrampling && block.getRelative(BlockFace.UP).getType() == Material.POTATO)) {
                 // Deny event and set the block
                 event.setUseInteractedBlock(org.bukkit.event.Event.Result.DENY);
                 event.setCancelled(true);
@@ -344,7 +344,7 @@ public class SuperWheatBlockListener implements Listener {
             }
             // Else, if the data for the block IS 7 (The crop is fully grown) and the player
             // has the permission node so the crop automatically re-grows after being harvested...
-            else if (data == 7 && player.hasPermission("SuperWheat.wheat.regrowing")) {
+            else if (player.hasPermission("SuperWheat.wheat.regrowing")) {
                 if (!player.hasPermission("SuperWheat.wheat.noseeds")) {
                     if (player.getInventory().contains(Material.SEEDS)) {
                         removeInventoryItems(player.getInventory(), Material.SEEDS, false, 1);
@@ -384,7 +384,7 @@ public class SuperWheatBlockListener implements Listener {
             }
             // Else, if the data for the block IS 3 (The crop is fully grown) and the player
             // has the permission node so the crop automatically re-grows after being harvested...
-            else if (data == 3 && player.hasPermission("SuperWheat.netherwart.regrowing")) {
+            else if (player.hasPermission("SuperWheat.netherwart.regrowing")) {
                 if (!player.hasPermission("SuperWheat.wheat.noseeds")) {
                     if (player.getInventory().contains(Material.NETHER_STALK)) {
                         removeInventoryItems(player.getInventory(), Material.NETHER_STALK, false, 1);
@@ -418,10 +418,8 @@ public class SuperWheatBlockListener implements Listener {
             }
             // Else, if the data for the block IS 8 or higher (The crop is fully grown) and the player
             // has the permission node so the crop automatically re-grows after being harvested...
-            else if (data >= 8 && player.hasPermission("SuperWheat.cocoaplant.regrowing")) {
+            else if (player.hasPermission("SuperWheat.cocoaplant.regrowing")) {
                 if (!player.hasPermission("SuperWheat.cocoaplant.noseeds")) {
-                    ItemStack i = new ItemStack(Material.INK_SACK);
-                    i.setDurability((short) 3);
                     if (containsWithDurability(player.getInventory(), Material.INK_SACK, (short) 3)) {
                         removeInventoryItems(player.getInventory(), Material.INK_SACK, true, 1);
                     }
@@ -456,7 +454,7 @@ public class SuperWheatBlockListener implements Listener {
             }
             // Else, if the data for the block IS 7 (The crop is fully grown) and the player
             // has the permission node so the crop automatically re-grows after being harvested...
-            else if (data == 7 && player.hasPermission("SuperWheat.carrot.regrowing")) {
+            else if (player.hasPermission("SuperWheat.carrot.regrowing")) {
                 if (!player.hasPermission("SuperWheat.carrot.noseeds")) {
                     if (player.getInventory().contains(Material.CARROT_ITEM)) {
                         removeInventoryItems(player.getInventory(), Material.CARROT_ITEM, false, 1);
@@ -575,21 +573,20 @@ public class SuperWheatBlockListener implements Listener {
         for (ItemStack is : inv.getContents()) {
             if (is != null && is.getType() == type) {
                 // Either no cocoa or cocoa and right durability
-                if (!cocoa || (cocoa && is.getDurability() == (short) 3)) {
+                if (!cocoa || cocoa && is.getDurability() == (short) 3) {
                     int newamount = is.getAmount() - amount;
                     // More than 0, fine just set the new amount
                     if (newamount > 0) {
                         is.setAmount(newamount);
                         // Stop then
                         break;
-                    } else {
-                        // Remove the stack and reduce the needed amount, go on then
-                        inv.remove(is);
-                        amount -= newamount;
-                        if (amount == 0) {
-                            // Stop when we reached 0
-                            break;
-                        }
+                    }
+                    // Remove the stack and reduce the needed amount, go on then
+                    inv.remove(is);
+                    amount -= newamount;
+                    if (amount == 0) {
+                        // Stop when we reached 0
+                        break;
                     }
                 }
             }
@@ -612,6 +609,7 @@ public class SuperWheatBlockListener implements Listener {
         // like right when you just plant it. With a light delay...
         block.setType(Material.AIR);
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
             public void run() {
                 // First -> Farmland (soil)
                 if (farmland) {
@@ -622,6 +620,6 @@ public class SuperWheatBlockListener implements Listener {
                 }
                 block.setTypeIdAndData(newID, data, true);
             }
-        }, (20L * delay));
+        }, 20L * delay);
     }
 }

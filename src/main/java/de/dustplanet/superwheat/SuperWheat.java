@@ -16,10 +16,10 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * SuperWheat for CraftBukkit/Bukkit 
- * Handles some general stuff! 
- * 
- * Refer to the dev.bukkit.org page: 
+ * SuperWheat for CraftBukkit/Bukkit
+ * Handles some general stuff!
+ *
+ * Refer to the dev.bukkit.org page:
  * http://dev.bukkit.org/bukkit-plugins/superwheat/
  *
  * @author xGhOsTkiLLeRx
@@ -67,7 +67,12 @@ public class SuperWheat extends JavaPlugin {
     public FileConfiguration config;
     private File configFile;
 
-    // Start
+    @Override
+    public void onDisable() {
+        enabledWorlds.clear();
+    }
+
+    @Override
     public void onEnable() {
         // Events
         PluginManager pm = getServer().getPluginManager();
@@ -92,7 +97,7 @@ public class SuperWheat extends JavaPlugin {
     }
 
     private void setupDefaultConfig() {
-        config.options().header("For help please either refer to the\nforum thread: http://bit.ly/superwheatthread\nor the bukkit dev page: http://bit.ly/superwheatpage");
+        config.options().header("For help please refer to BukkitDev: http://dev.bukkit.org/bukkit-plugins/superwheat/");
         // Localization
         config.addDefault("message-enabled", true);
         config.addDefault("message", "&6[SuperWheat] That plant is not fully grown yet!");

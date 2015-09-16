@@ -6,12 +6,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 /**
- * SuperWheat for CraftBukkit/Bukkit 
- * Handles the command 
-
- * Refer to the dev.bukkit.org page: 
+ * SuperWheat for CraftBukkit/Bukkit
+ * Handles the command
+ * Refer to the dev.bukkit.org page:
  * http://dev.bukkit.org/bukkit-plugins/superwheat/
- * 
+ *
  * @author xGhOsTkiLLeRx
  * thanks to thescreem for the original SuperWheat plugin!
  */
@@ -23,6 +22,7 @@ public class SuperWheatCommand implements CommandExecutor {
         plugin = instance;
     }
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
         if (args.length == 0) {
             sender.sendMessage(ChatColor.YELLOW + "Usage: /superwheat reload (or /sw reload)");
