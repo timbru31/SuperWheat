@@ -17,37 +17,28 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-/**
- * SuperWheat for CraftBukkit/Bukkit
- * Handles block activities!
- *
- * http://dev.bukkit.org/bukkit-plugins/superwheat/
- *
- * @author xGhOsTkiLLeRx
- * thanks to thescreem for the original SuperWheat plugin!
- */
-
 public class SuperWheatBlockListener implements Listener {
     private SuperWheat plugin;
     private Random random = new Random();
 
-    public SuperWheatBlockListener(SuperWheat instance){
+    public SuperWheatBlockListener(SuperWheat instance) {
         plugin = instance;
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event)  {
+    public void onPlayerInteract(PlayerInteractEvent event) {
         // Physical means jump on it
         if (event.getAction() == Action.PHYSICAL) {
             Block block = event.getClickedBlock();
-            // Is the world on the list?
             if (block == null || plugin.enabledWorlds.contains(block.getWorld().getName())) {
                 return;
             }
             // If the block is farmland (soil) & matches any of the no trampling blocks
-            if (block.getType() == Material.SOIL && (!plugin.wheatTrampling && block.getRelative(BlockFace.UP).getType() == Material.CROPS
-                    || !plugin.carrotTrampling && block.getRelative(BlockFace.UP).getType() == Material.CARROT
-                    || !plugin.potatoTrampling && block.getRelative(BlockFace.UP).getType() == Material.POTATO)) {
+            if (block.getType() == Material.SOIL
+                    && (!plugin.wheatTrampling && block.getRelative(BlockFace.UP).getType() == Material.CROPS
+                            || !plugin.carrotTrampling && block.getRelative(BlockFace.UP).getType() == Material.CARROT
+                            || !plugin.potatoTrampling
+                                    && block.getRelative(BlockFace.UP).getType() == Material.POTATO)) {
                 // Deny event and set the block
                 event.setUseInteractedBlock(org.bukkit.event.Event.Result.DENY);
                 event.setCancelled(true);
@@ -73,8 +64,7 @@ public class SuperWheatBlockListener implements Listener {
                     // Should we cancel this?
                     if (plugin.wheatPreventWaterGrown) {
                         event.setCancelled(true);
-                    }
-                    else {
+                    } else {
                         // Set to air and drop. Then wait the delay and make it a premature block again
                         if (plugin.wheatWaterDropSeeds) {
                             dropSeeds(block);
@@ -97,13 +87,13 @@ public class SuperWheatBlockListener implements Listener {
                     // Should we cancel this?
                     if (plugin.netherWartPreventWaterGrown) {
                         event.setCancelled(true);
-                    }
-                    else {
+                    } else {
                         // Set to air and drop. Then wait the delay and make it a premature block again
                         if (plugin.netherWartWaterDropNetherWart) {
                             dropNetherWart(block);
                         }
-                        blockSchedulder(block, Material.NETHER_WARTS.getId(), (byte) 0, plugin.netherWartDelayWater, false);
+                        blockSchedulder(block, Material.NETHER_WARTS.getId(), (byte) 0, plugin.netherWartDelayWater,
+                                false);
                     }
                 }
                 // MUST be a premature block, cancel it or not?
@@ -118,8 +108,7 @@ public class SuperWheatBlockListener implements Listener {
                     // Should we cancel this?
                     if (plugin.cocoaPlantPreventWaterGrown) {
                         event.setCancelled(true);
-                    }
-                    else {
+                    } else {
                         final byte dataNew = (byte) (block.getData() - 8);
                         // Set to air and drop. Then wait the delay and make it a premature block again
                         if (plugin.cocoaPlantWaterDropCocoaPlant) {
@@ -141,8 +130,7 @@ public class SuperWheatBlockListener implements Listener {
                     // Should we cancel this?
                     if (plugin.carrotPreventWaterGrown) {
                         event.setCancelled(true);
-                    }
-                    else {
+                    } else {
                         // Set to air and drop. Then wait the delay and make it a premature block again
                         if (plugin.carrotWaterDropCarrot) {
                             dropCarrot(block);
@@ -162,8 +150,7 @@ public class SuperWheatBlockListener implements Listener {
                     // Should we cancel this?
                     if (plugin.potatoPreventWaterGrown) {
                         event.setCancelled(true);
-                    }
-                    else {
+                    } else {
                         // Set to air and drop. Then wait the delay and make it a premature block again
                         if (plugin.potatoWaterDropPotato) {
                             dropPotato(block);
@@ -175,24 +162,23 @@ public class SuperWheatBlockListener implements Listener {
                 else if (plugin.potatoPreventWater) {
                     event.setCancelled(true);
                 }
-            }
-            else if (event.getToBlock().getType() == Material.SUGAR_CANE_BLOCK && plugin.sugarCaneEnabled) {
+            } else if (event.getToBlock().getType() == Material.SUGAR_CANE_BLOCK && plugin.sugarCaneEnabled) {
                 if (plugin.sugarCanePreventWater) {
                     event.setCancelled(true);
-                }
-                else {
+                } else {
                     // Set to air and drop. Then wait the delay and make it a premature block again
                     if (plugin.sugarCaneWaterDropSugarCane) {
                         dropSugarCane(block);
                     }
-                    blockSchedulder(block, Material.SUGAR_CANE_BLOCK.getId(), (byte) 0, plugin.sugarCaneDelayWater, true);
+                    blockSchedulder(block, Material.SUGAR_CANE_BLOCK.getId(), (byte) 0, plugin.sugarCaneDelayWater,
+                            true);
                 }
             }
         }
     }
 
     @EventHandler
-    public void onBlockPistonExtend (BlockPistonExtendEvent event) {
+    public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         // Get the block the piston pushed
         final Block block = event.getBlock().getRelative(event.getDirection());
         byte data = block.getData();
@@ -207,8 +193,7 @@ public class SuperWheatBlockListener implements Listener {
                 // Should we cancel this?
                 if (plugin.wheatPreventPistonGrown) {
                     event.setCancelled(true);
-                }
-                else {
+                } else {
                     // Set to air and drop. Then wait the delay and make it a premature block again
                     if (plugin.wheatPistonDropSeeds) {
                         dropSeeds(block);
@@ -223,35 +208,32 @@ public class SuperWheatBlockListener implements Listener {
             else if (plugin.wheatPreventPiston) {
                 event.setCancelled(true);
             }
-        }
-        else if (block.getType() == Material.NETHER_WARTS && plugin.netherWartEnabled) {
+        } else if (block.getType() == Material.NETHER_WARTS && plugin.netherWartEnabled) {
             // Mature
             if (data == 3) {
                 // Should we cancel this?
                 if (plugin.netherWartPreventPistonGrown) {
                     event.setCancelled(true);
-                }
-                else {
+                } else {
                     // Set to air and drop. Then wait the delay and make it a premature block again
                     if (plugin.netherWartPistonDropNetherWart) {
                         dropNetherWart(block);
                     }
-                    blockSchedulder(block, Material.NETHER_WARTS.getId(), (byte) 0, plugin.netherWartDelayPiston, false);
+                    blockSchedulder(block, Material.NETHER_WARTS.getId(), (byte) 0, plugin.netherWartDelayPiston,
+                            false);
                 }
             }
             // MUST be a premature block, cancel it or not?
             else if (plugin.netherWartPreventPiston) {
                 event.setCancelled(true);
             }
-        }
-        else if (block.getType() == Material.COCOA && plugin.cocoaPlantEnabled) {
+        } else if (block.getType() == Material.COCOA && plugin.cocoaPlantEnabled) {
             // Mature
             if (data >= 8) {
                 // Should we cancel this?
                 if (plugin.cocoaPlantPreventPistonGrown) {
                     event.setCancelled(true);
-                }
-                else {
+                } else {
                     // Minus 8 to keep the relative
                     final byte dataNew = (byte) (block.getData() - 8);
                     // Set to air and drop. Then wait the delay and make it a premature block again
@@ -265,15 +247,13 @@ public class SuperWheatBlockListener implements Listener {
             else if (plugin.cocoaPlantPreventPiston) {
                 event.setCancelled(true);
             }
-        }
-        else if (block.getType() == Material.CARROT && plugin.carrotEnabled) {
+        } else if (block.getType() == Material.CARROT && plugin.carrotEnabled) {
             // Mature
             if (data == 7) {
                 // Should we cancel this?
                 if (plugin.carrotPreventPistonGrown) {
                     event.setCancelled(true);
-                }
-                else {
+                } else {
                     // Set to air and drop. Then wait the delay and make it a premature block again
                     if (plugin.carrotPistonDropCarrot) {
                         dropCarrot(block);
@@ -285,15 +265,13 @@ public class SuperWheatBlockListener implements Listener {
             else if (plugin.carrotPreventPiston) {
                 event.setCancelled(true);
             }
-        }
-        else if (block.getType() == Material.POTATO && plugin.potatoEnabled) {
+        } else if (block.getType() == Material.POTATO && plugin.potatoEnabled) {
             // Mature
             if (data == 7) {
                 // Should we cancel this?
                 if (plugin.potatoPreventPistonGrown) {
                     event.setCancelled(true);
-                }
-                else {
+                } else {
                     // Set to air and drop. Then wait the delay and make it a premature block again
                     if (plugin.potatoPistonDropPotato) {
                         dropPotato(block);
@@ -305,12 +283,10 @@ public class SuperWheatBlockListener implements Listener {
             else if (plugin.potatoPreventPiston) {
                 event.setCancelled(true);
             }
-        }
-        else if (block.getType() == Material.SUGAR_CANE_BLOCK && plugin.sugarCaneEnabled) {
+        } else if (block.getType() == Material.SUGAR_CANE_BLOCK && plugin.sugarCaneEnabled) {
             if (plugin.sugarCanePreventPiston) {
                 event.setCancelled(true);
-            }
-            else {
+            } else {
                 // Set to air and drop. Then wait the delay and make it a premature block again
                 if (plugin.sugarCanePistonDropSugarCane) {
                     dropSugarCane(block);
@@ -348,8 +324,7 @@ public class SuperWheatBlockListener implements Listener {
                 if (!player.hasPermission("SuperWheat.wheat.noseeds")) {
                     if (player.getInventory().contains(Material.SEEDS)) {
                         removeInventoryItems(player.getInventory(), Material.SEEDS, false, 1);
-                    }
-                    else {
+                    } else {
                         return;
                     }
                 }
@@ -369,8 +344,7 @@ public class SuperWheatBlockListener implements Listener {
                     }
                 }
             }
-        }
-        else if (block.getType() == Material.NETHER_WARTS && plugin.netherWartEnabled) {
+        } else if (block.getType() == Material.NETHER_WARTS && plugin.netherWartEnabled) {
             // If the data for the nether wart isn't 3 (Isn't fully grown)
             // And the player doesn't have the bypass permission...
             // Also check if creative guys should be able to destroy
@@ -388,8 +362,7 @@ public class SuperWheatBlockListener implements Listener {
                 if (!player.hasPermission("SuperWheat.wheat.noseeds")) {
                     if (player.getInventory().contains(Material.NETHER_STALK)) {
                         removeInventoryItems(player.getInventory(), Material.NETHER_STALK, false, 1);
-                    }
-                    else {
+                    } else {
                         return;
                     }
                 }
@@ -403,8 +376,7 @@ public class SuperWheatBlockListener implements Listener {
                     dropNetherWart(block);
                 }
             }
-        }
-        else if (block.getType() == Material.COCOA && plugin.cocoaPlantEnabled) {
+        } else if (block.getType() == Material.COCOA && plugin.cocoaPlantEnabled) {
             // If the data for the cocoa plant isn't at least 8 (Isn't fully grown)
             // And the player doesn't have the bypass permission...
             // Also check if creative guys should be able to destroy
@@ -422,8 +394,7 @@ public class SuperWheatBlockListener implements Listener {
                 if (!player.hasPermission("SuperWheat.cocoaplant.noseeds")) {
                     if (containsWithDurability(player.getInventory(), Material.INK_SACK, (short) 3)) {
                         removeInventoryItems(player.getInventory(), Material.INK_SACK, true, 1);
-                    }
-                    else {
+                    } else {
                         return;
                     }
                 }
@@ -439,8 +410,7 @@ public class SuperWheatBlockListener implements Listener {
                     dropCocoaBeans(block);
                 }
             }
-        }
-        else if (block.getType() == Material.CARROT && plugin.carrotEnabled) {
+        } else if (block.getType() == Material.CARROT && plugin.carrotEnabled) {
             // If the data for the carrot isn't 7 (Isn't fully grown)
             // And the player doesn't have the bypass permission...
             // Also check if creative guys should be able to destroy
@@ -458,8 +428,7 @@ public class SuperWheatBlockListener implements Listener {
                 if (!player.hasPermission("SuperWheat.carrot.noseeds")) {
                     if (player.getInventory().contains(Material.CARROT_ITEM)) {
                         removeInventoryItems(player.getInventory(), Material.CARROT_ITEM, false, 1);
-                    }
-                    else {
+                    } else {
                         return;
                     }
                 }
@@ -473,8 +442,7 @@ public class SuperWheatBlockListener implements Listener {
                     dropCarrot(block);
                 }
             }
-        }
-        else if (block.getType() == Material.POTATO && plugin.potatoEnabled) {
+        } else if (block.getType() == Material.POTATO && plugin.potatoEnabled) {
             // If the data for the potato isn't 7 (Isn't fully grown)
             // And the player doesn't have the bypass permission...
             // Also check if creative guys should be able to destroy
@@ -492,8 +460,7 @@ public class SuperWheatBlockListener implements Listener {
                 if (!player.hasPermission("SuperWheat.potato.noseeds")) {
                     if (player.getInventory().contains(Material.POTATO_ITEM)) {
                         removeInventoryItems(player.getInventory(), Material.POTATO_ITEM, false, 1);
-                    }
-                    else {
+                    } else {
                         return;
                     }
                 }
@@ -507,15 +474,13 @@ public class SuperWheatBlockListener implements Listener {
                     dropPotato(block);
                 }
             }
-        }
-        else if (block.getType() == Material.SUGAR_CANE_BLOCK && plugin.sugarCaneEnabled) {
+        } else if (block.getType() == Material.SUGAR_CANE_BLOCK && plugin.sugarCaneEnabled) {
             // If the player has the permission node so the crop automatically re-grows after being harvested...
             if (player.hasPermission("SuperWheat.sugarcane.regrowing")) {
                 if (!player.hasPermission("SuperWheat.sugarcane.noseeds")) {
                     if (player.getInventory().contains(Material.SUGAR_CANE)) {
                         removeInventoryItems(player.getInventory(), Material.SUGAR_CANE, false, 1);
-                    }
-                    else {
+                    } else {
                         return;
                     }
                 }
@@ -532,42 +497,37 @@ public class SuperWheatBlockListener implements Listener {
         }
     }
 
-    // Drops wheat
     private void dropWheat(Block block) {
         block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.WHEAT, random.nextInt(3) + 1));
     }
 
-    // Drops seeds
     private void dropSeeds(Block block) {
         block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.SEEDS, random.nextInt(4)));
     }
 
-    // Drops netherWart
     private void dropNetherWart(Block block) {
-        block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.NETHER_STALK, random.nextInt(4) + 2));
+        block.getWorld().dropItemNaturally(block.getLocation(),
+                new ItemStack(Material.NETHER_STALK, random.nextInt(4) + 2));
     }
 
-    // Drops cocoa beans
     private void dropCocoaBeans(Block block) {
         block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.INK_SACK, 3, (short) 3));
     }
 
-    // Drops carrots
     private void dropCarrot(Block block) {
-        block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.CARROT_ITEM, random.nextInt(4) + 1));
+        block.getWorld().dropItemNaturally(block.getLocation(),
+                new ItemStack(Material.CARROT_ITEM, random.nextInt(4) + 1));
     }
 
-    // Drops potatoes
     private void dropPotato(Block block) {
-        block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.POTATO_ITEM, random.nextInt(4) + 1));
+        block.getWorld().dropItemNaturally(block.getLocation(),
+                new ItemStack(Material.POTATO_ITEM, random.nextInt(4) + 1));
     }
 
-    // Drops sugar canes
     private void dropSugarCane(Block block) {
         block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.SUGAR_CANE, 1));
     }
 
-    // Removes item
     private void removeInventoryItems(Inventory inv, Material type, boolean cocoa, int amount) {
         // Iterate through inventory
         for (ItemStack is : inv.getContents()) {
@@ -575,17 +535,14 @@ public class SuperWheatBlockListener implements Listener {
                 // Either no cocoa or cocoa and right durability
                 if (!cocoa || cocoa && is.getDurability() == (short) 3) {
                     int newamount = is.getAmount() - amount;
-                    // More than 0, fine just set the new amount
                     if (newamount > 0) {
                         is.setAmount(newamount);
-                        // Stop then
                         break;
                     }
                     // Remove the stack and reduce the needed amount, go on then
                     inv.remove(is);
                     amount -= newamount;
                     if (amount == 0) {
-                        // Stop when we reached 0
                         break;
                     }
                 }
@@ -593,7 +550,6 @@ public class SuperWheatBlockListener implements Listener {
         }
     }
 
-    // Checks with the durability, too
     private boolean containsWithDurability(Inventory inventory, Material inkSack, short s) {
         for (ItemStack is : inventory) {
             // Check the short value of the inkSack for cocoa beans
@@ -604,7 +560,8 @@ public class SuperWheatBlockListener implements Listener {
         return false;
     }
 
-    private void blockSchedulder(final Block block, final int newID, final byte data, int delay, final boolean farmland) {
+    private void blockSchedulder(final Block block, final int newID, final byte data, int delay,
+            final boolean farmland) {
         // Set the block to a data value of 0, which is what the crop looks
         // like right when you just plant it. With a light delay...
         block.setType(Material.AIR);

@@ -1,4 +1,4 @@
-# For help please either refer to BukkitDev: http://dev.bukkit.org/bukkit-plugins/superwheat/
+# For help please either refer to BukkitDev: https://dev.bukkit.org/projects/superwheat
 message: '&6[SuperWheat] That plant is not fully grown yet!'
 message-enabled: true
 creative:

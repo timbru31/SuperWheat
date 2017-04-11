@@ -1,87 +1,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.dustplanet</groupId>
+
+  <parent>
+    <groupId>de.dustplanet</groupId>
+    <artifactId>bukkit-plugin</artifactId>
+    <version>1.2.5-SNAPSHOT</version>
+    <relativePath />
+  </parent>
+
   <artifactId>SuperWheat</artifactId>
-  <version>0.9.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <name>SuperWheat</name>
   <description>Wheat re-grows automatically</description>
-  <url>http://dev.bukkit.org/bukkit-plugins/superwheat/</url>
+  <url>https://dev.bukkit.org/projects/superwheat</url>
 
-  <!-- Encode in UTF-8 -->
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <plugin.name>SuperWheat</plugin.name>
+    <plugin.main>de.dustplanet.superwheat.SuperWheat</plugin.main>
+    <plugin.package>de.dustplanet.superwheat</plugin.package>
+    <jdk.version>1.8</jdk.version>
   </properties>
 
-  <!-- Repositories -->
-  <repositories>
-    <repository>
-      <id>spigotmc-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-    </repository>
-  </repositories>
-
-  <!-- Dependencies -->
-  <dependencies>
-    <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.10-R0.1-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
-
- <build>
-    <!-- Compile for 1.7 and clean before -->
-    <defaultGoal>clean compile package</defaultGoal>
-    <finalName>SuperWheat</finalName>
-    <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <verbose>true</verbose>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
-    </plugins>
-
-    <!-- Include the .yml files -->
-    <resources>
-      <resource>
-        <targetPath>.</targetPath>
-        <filtering>true</filtering>
-        <directory>${basedir}/src/main/resources</directory>
-        <includes>
-          <include>plugin.yml</include>
-          <include>config.yml</include>
-          <include>localization.yml</include>
-        </includes>
-      </resource>
-      <resource>
-        <targetPath>.</targetPath>
-        <filtering>true</filtering>
-        <directory>${basedir}</directory>
-        <includes>
-          <include>README.txt</include>
-        </includes>
-      </resource>
-    </resources>
-  </build>
-
-  <!-- GitHub information -->
+  <!-- Maven is broken, so add scm duplication to child -->
   <scm>
     <url>https://github.com/timbru31/SuperWheat</url>
     <connection>scm:git:git://github.com/timbru31/SuperWheat.git</connection>
-    <tag>master</tag>
     <developerConnection>scm:git:git@github.com:timbru31/SuperWheat.git</developerConnection>
   </scm>
-
-  <!-- Jenkins information -->
-  <ciManagement>
-    <url>https://ci.dustplanet.de/job/SuperWheat</url>
-    <system>jenkins</system>
-  </ciManagement>
 </project>
