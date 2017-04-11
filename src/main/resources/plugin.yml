@@ -36,7 +36,7 @@ permissions:
         description: Allows getting of seeds, too
     SuperWheat.wheat.noseeds:
         default: op
-        description: Doesn't require the seeds in the inv
+        description: Doesn't require the seeds in the inventory
     SuperWheat.netherwart.*:
         children:
             SuperWheat.netherwart.destroying: true
@@ -50,7 +50,7 @@ permissions:
         description: Allows regrowing of nether wart
     SuperWheat.netherwart.noseeds:
         default: op
-        description: Doesn't require the nether wart in the inv
+        description: Doesn't require the nether wart in the inventory
     SuperWheat.cocoaplant.*:
         children:
             SuperWheat.cocoaplant.destroying: true
@@ -64,7 +64,7 @@ permissions:
         description: Allows regrowing of cocoa plants
     SuperWheat.cocoaplant.noseeds:
         default: op
-        description: Doesn't require the cocoa in the inv
+        description: Doesn't require the cocoa in the inventory
     SuperWheat.carrot.*:
         children:
             SuperWheat.carrot.destroying: true
@@ -78,7 +78,7 @@ permissions:
         description: Allows regrowing of carrots
     SuperWheat.carrot.noseeds:
         default: op
-        description: Doesn't require the carrots in the inv
+        description: Doesn't require the carrots in the inventory
     SuperWheat.potato.*:
         children:
             SuperWheat.potato.destroying: true
@@ -92,7 +92,7 @@ permissions:
         description: Allows regrowing of potatoes
     SuperWheat.potato.noseeds:
         default: op
-        description: Doesn't require the potatoes in the inv
+        description: Doesn't require the potatoes in the inventory
     SuperWheat.sugarcane.*:
         children:
             SuperWheat.sugarcane.regrowing: true
@@ -102,7 +102,7 @@ permissions:
         description: Allows regrowing of sugar canes
     SuperWheat.sugarcane.noseeds:
         default: op
-        description: Doesn't require the sugar canes in the inv
+        description: Doesn't require the sugar canes in the inventory
     SuperWheat.reload:
          default: op
          description: Reloads the config
